@@ -25,10 +25,7 @@ export const signup = async (req, res) => {
 
   if (error) {
     return res.status(400).send(error)
-  } // .details[0].message
-
-  // i should find if the user with email or name already exists
-  // if he exists i shuld return response
+  }
 
   try {
     const user = await User.create(req.body)
@@ -45,7 +42,7 @@ export const signin = async (req, res) => {
 
   if (error) {
     return res.status(400).send(error.details[0])
-  } // .message
+  }
 
   try {
     user = await User.findOne({ email: req.body.email })
