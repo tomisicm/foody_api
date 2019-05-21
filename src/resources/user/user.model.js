@@ -78,6 +78,10 @@ userSchema.methods.comparePassword = function(password) {
   })
 }
 
+userSchema.statics.findByEmail = function(email) {
+  return this.find({ email: new RegExp(email, 'i') })
+}
+
 userSchema.plugin(mongoosePaginate)
 
 function validateSignup(user) {
