@@ -78,6 +78,12 @@ userSchema.methods.comparePassword = function(password) {
   })
 }
 
+userSchema.methods.isAdmin = function() {
+  return this.admin
+}
+
+// TODO: .method for permissions
+
 userSchema.statics.findByEmail = function(email) {
   return this.find({ email: new RegExp(email, 'i') })
 }
