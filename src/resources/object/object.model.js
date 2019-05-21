@@ -11,12 +11,9 @@ const objectSchema = new mongoose.Schema(
       trim: true,
       maxlength: 50
     },
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-      trim: true,
-      maxlength: 50
+    address: {
+      type: Object,
+      default: null
     }
   },
   {
@@ -34,18 +31,28 @@ const objectSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
+const addressShema = Joi.object().keys({
+  city: Joi.string()
+    .trim()
+    .max(50)
+    .required(),
+  street: Joi.string()
+    .trim()
+    .max(50),
+  streetNo: Joi.string()
+    .trim()
+    .max(50)
+})
+
 function validateObject(object) {
   const schema = {
     name: Joi.string()
       .trim()
       .max(50)
       .required(),
-    street: Joi.string()
-      .trim()
-      .max(50),
-    streetNo: Joi.string()
-      .trim()
-      .max(50)
+    address: addressShema,
+    foodType: [Joi.string()],
+    openingYear: Joi.date()
   }
   return Joi.validate(object, schema)
 }
