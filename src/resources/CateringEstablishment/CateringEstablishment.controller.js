@@ -53,8 +53,28 @@ export const createCateringEstablishment = async (req, res) => {
   }
 }
 
+// add pre remove hook for deleting all the comments and reviews
+export const deleteCateringEstablishment = async (req, res) => {
+  try {
+    const removed = await CateringEstablishment.findOneAndRemove({
+      createdBy: req.user._id,
+      _id: req.params.id
+    })
+
+    if (!removed) {
+      return res.status(400).end()
+    }
+
+    return res.status(200).json({ data: removed })
+  } catch (e) {
+    console.error(e)
+    res.status(400).end()
+  }
+}
+
 export default {
   createOne: createCateringEstablishment,
   getOne: getOneCateringEstablishment,
-  getMany: getManyCateringEstablishment
+  getMany: getManyCateringEstablishment,
+  deleteOne: deleteCateringEstablishment
 }
