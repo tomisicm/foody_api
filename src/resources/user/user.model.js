@@ -7,8 +7,7 @@ const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
-      unique: true,
+      default: null,
       trim: true,
       maxlength: 50
     },
@@ -24,23 +23,18 @@ const userSchema = new mongoose.Schema(
       required: true,
       minlength: 8,
       trim: true
-    },
-    avatar: {
-      type: Buffer
     }
   },
   {
     toObject: {
       transform: function(doc, ret) {
         delete ret.password
-        delete ret.avatar
         delete ret.__v
       }
     },
     toJSON: {
       transform: function(doc, ret) {
         delete ret.password
-        delete ret.avatar
         delete ret.__v
       }
     }
@@ -78,14 +72,8 @@ userSchema.methods.comparePassword = function(password) {
 
 userSchema.plugin(mongoosePaginate)
 
-/* userSchema.index({ name: 1, email: 1 }, { unique: true }) */
-
 function validateSignup(user) {
   const schema = {
-    name: Joi.string()
-      .trim()
-      .required()
-      .max(50),
     email: Joi.string()
       .trim()
       .email({ minDomainAtoms: 2 })
@@ -94,13 +82,16 @@ function validateSignup(user) {
     password: Joi.string()
       .trim()
       .min(8)
+      .required(),
+    passwordConfirm: Joi.string()
+      .trim()
+      .min(8)
       .required()
   }
   return Joi.validate(user, schema)
 }
 
 function validateSignin(user) {
-  // Joi schema
   const schema = {
     email: Joi.string()
       .trim()

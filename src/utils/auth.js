@@ -27,12 +27,16 @@ export const signup = async (req, res) => {
     return res.status(400).send(error)
   }
 
+  if (req.body.password !== req.body.passwordConfirm) {
+    return res.status(400).send('Password and Confirm Password do not match')
+  }
+
   try {
     const user = await User.create(req.body)
     const token = newToken(user)
     return res.status(201).send({ token })
   } catch (e) {
-    return res.status(500).end()
+    return res.status(500).send(e)
   }
 }
 

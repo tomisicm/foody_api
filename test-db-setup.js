@@ -3,7 +3,6 @@ import cuid from 'cuid'
 import _ from 'lodash'
 
 import { User } from './src/resources/user/user.model'
-import { Rating } from './src/resources/rating/rating.model'
 
 // fix this shite later
 const models = { User }

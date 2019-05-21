@@ -2,9 +2,6 @@ import { User } from './user.model'
 
 import _ from 'lodash'
 
-/* deviation from standard REST API structure */
-/* user can only get his info and update his info */
-
 export const me = async (req, res) => {
   try {
     const user = await User.findById(req.user._id)
@@ -15,7 +12,6 @@ export const me = async (req, res) => {
   }
 }
 
-// user updates his data
 export const updateMe = async (req, res) => {
   try {
     const user = await User.findByIdAndUpdate(req.user._id, req.body, {
