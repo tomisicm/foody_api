@@ -13,5 +13,5 @@ const createObject = async (req, res) => {
 }
 
 export default {
-  getOne: createObject
+  createOne: createObject
 }

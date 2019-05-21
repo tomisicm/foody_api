@@ -7,11 +7,12 @@ import config from './config'
 import cors from 'cors'
 import Joi from '@hapi/joi'
 
-import { signup, signin, protect } from './utils/auth'
+import { signup, signin } from './utils/auth'
 
 import { connect } from './utils/db'
 
 import userRouter from './resources/user/user.router'
+import objectRouter from './resources/object/object.router'
 
 Joi.objectId = require('joi-objectid')(Joi)
 
@@ -28,8 +29,7 @@ app.use(morgan('dev'))
 app.post('/signup', signup)
 app.post('/signin', signin)
 
-// auth
-app.use('/api', protect)
+app.use('/api/objects', objectRouter)
 
 app.use('/api/user', userRouter)
 

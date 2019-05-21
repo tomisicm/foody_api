@@ -1,8 +1,9 @@
 import { Router } from 'express'
-import controllers from './genre.controller'
+import controllers from './object.controller'
+import { protect } from '../../utils/auth'
 
 const router = Router()
 
-router.route('/').post(controllers.createOne)
+router.route('/').post(protect, controllers.createOne)
 
 export default router
