@@ -12,7 +12,7 @@ import { signup, signin } from './utils/auth'
 import { connect } from './utils/db'
 
 import userRouter from './resources/user/user.router'
-import objectRouter from './resources/object/object.router'
+import CateringEstablishmentRouter from './resources/CateringEstablishment/CateringEstablishment.router'
 
 Joi.objectId = require('joi-objectid')(Joi)
 
@@ -29,7 +29,7 @@ app.use(morgan('dev'))
 app.post('/signup', signup)
 app.post('/signin', signin)
 
-app.use('/api/objects', objectRouter)
+app.use('/api/catering', CateringEstablishmentRouter)
 
 app.use('/api/user', userRouter)
 

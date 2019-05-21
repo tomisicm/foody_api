@@ -3,7 +3,7 @@ import mongoosePaginate from 'mongoose-paginate'
 
 import Joi from '@hapi/joi'
 
-const objectSchema = new mongoose.Schema(
+const cateringEstablishmentSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -44,7 +44,7 @@ const addressShema = Joi.object().keys({
     .max(50)
 })
 
-function validateObject(object) {
+function validateObject(catering) {
   const schema = {
     name: Joi.string()
       .trim()
@@ -54,10 +54,13 @@ function validateObject(object) {
     foodType: [Joi.string()],
     openingYear: Joi.date()
   }
-  return Joi.validate(object, schema)
+  return Joi.validate(catering, schema)
 }
 
-objectSchema.plugin(mongoosePaginate)
+cateringEstablishmentSchema.plugin(mongoosePaginate)
 
 exports.validateObject = validateObject
-exports.Object = mongoose.model('object', objectSchema)
+exports.CateringEstablishment = mongoose.model(
+  'cateringestablishment',
+  cateringEstablishmentSchema
+)
