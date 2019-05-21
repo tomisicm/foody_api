@@ -23,6 +23,14 @@ const userSchema = new mongoose.Schema(
       required: true,
       minlength: 8,
       trim: true
+    },
+    user: {
+      type: Boolean,
+      default: true
+    },
+    admin: {
+      type: Boolean,
+      default: false
     }
   },
   {
