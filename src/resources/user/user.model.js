@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import mongoosePaginate from 'mongoose-paginate'
 import bcrypt from 'bcrypt'
-import Joi from 'joi'
+import Joi from '@hapi/joi'
 
 const userSchema = new mongoose.Schema(
   {

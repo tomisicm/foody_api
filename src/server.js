@@ -5,7 +5,7 @@ import { json, urlencoded } from 'body-parser'
 import morgan from 'morgan'
 import config from './config'
 import cors from 'cors'
-import Joi from 'joi'
+import Joi from '@hapi/joi'
 
 import { signup, signin, protect } from './utils/auth'
 
