@@ -27,7 +27,7 @@ export const updateMe = async (req, res) => {
   }
 }
 
-export const getMany = async (req, res) => {
+export const getUsersByNameOrEmail = async (req, res) => {
   let rq = req.query
   const { perPage, page } = req.query
 
@@ -36,7 +36,8 @@ export const getMany = async (req, res) => {
     query = {
       $or: [
         // eslint-disable-next-line prettier/prettier
-        { name: { $regex: rq.query, $options: 'i' } }
+        { name: { $regex: rq.query, $options: 'i' } },
+        { email: { $regex: rq.query, $options: 'i' } }
         // this will be expaned later once i add user profile section
         // where the plebs will be able to input first or last name
       ]
