@@ -7,7 +7,7 @@ import config from './config'
 import cors from 'cors'
 import Joi from '@hapi/joi'
 
-import { signup, signin } from './utils/auth'
+import { signup, signin, authorize } from './utils/auth'
 
 import { connect } from './utils/db'
 
@@ -28,6 +28,8 @@ app.use(morgan('dev'))
 
 app.post('/signup', signup)
 app.post('/signin', signin)
+
+app.use('/api', authorize)
 
 app.use('/api/catering', CateringEstablishmentRouter)
 

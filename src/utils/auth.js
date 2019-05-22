@@ -75,30 +75,37 @@ export const signin = async (req, res) => {
   }
 }
 
-export const protect = async (req, res, next) => {
+// mount on /api/
+export const authorize = async (req, res, next) => {
   const bearer = req.headers.authorization
 
-  if (!bearer || !bearer.startsWith('Bearer ')) {
+  if (bearer && bearer.startsWith('Bearer ')) {
+    const token = bearer.split('Bearer ')[1].trim()
+    let payload
+
+    try {
+      payload = await verifyToken(token)
+    } catch (e) {
+      return res.status(401).end()
+    }
+
+    const user = await User.findById(payload.id)
+      .select('-password')
+      .lean()
+      .exec()
+
+    if (!user) {
+      return res.status(401).end()
+    }
+
+    req.user = user
+    next()
+  }
+}
+
+export const protect = async (req, res, next) => {
+  if (!req.user) {
     return res.status(401).end()
   }
-
-  const token = bearer.split('Bearer ')[1].trim()
-  let payload
-  try {
-    payload = await verifyToken(token)
-  } catch (e) {
-    return res.status(401).end()
-  }
-
-  const user = await User.findById(payload.id)
-    .select('-password')
-    .lean()
-    .exec()
-
-  if (!user) {
-    return res.status(401).end()
-  }
-
-  req.user = user
   next()
 }
