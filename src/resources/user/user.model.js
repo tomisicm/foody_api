@@ -96,15 +96,18 @@ function validateSignup(user) {
       .trim()
       .email({ minDomainAtoms: 2 })
       .max(50)
-      .required(),
+      .required()
+      .label('email'),
     password: Joi.string()
       .trim()
       .min(8)
-      .required(),
+      .required()
+      .label('password'),
     passwordConfirm: Joi.string()
       .trim()
       .min(8)
       .required()
+      .label('passwordConfirm')
   }
   return Joi.validate(user, schema)
 }
@@ -115,11 +118,13 @@ function validateSignin(user) {
       .trim()
       .email({ minDomainAtoms: 2 })
       .max(50)
-      .required(),
+      .required()
+      .label('email'),
     password: Joi.string()
       .trim()
       .min(8)
       .required()
+      .label('password')
   }
   return Joi.validate(user, schema)
 }
