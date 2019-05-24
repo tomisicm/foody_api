@@ -91,7 +91,7 @@ userSchema.statics.findByEmail = function(email) {
 userSchema.plugin(mongoosePaginate)
 
 function validateSignup(user) {
-  const schema = {
+  const schema = Joi.object().keys({
     email: Joi.string()
       .trim()
       .email({ minDomainAtoms: 2 })
@@ -103,12 +103,11 @@ function validateSignup(user) {
       .min(8)
       .required()
       .label('password'),
-    passwordConfirm: Joi.string()
-      .trim()
-      .min(8)
+    passwordConfirm: Joi.any()
       .required()
+      .valid(Joi.ref('password'))
       .label('passwordConfirm')
-  }
+  })
   return Joi.validate(user, schema)
 }
 
