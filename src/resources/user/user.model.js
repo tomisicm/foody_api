@@ -108,9 +108,10 @@ function validateSignup(user) {
       .valid(Joi.ref('password'))
       .label('passwordConfirm')
   })
-  return Joi.validate(user, schema)
+  return Joi.validate(user, schema, { abortEarly: true })
 }
 
+// TODO: standardinze according to the object keys (response is diff)
 function validateSignin(user) {
   const schema = {
     email: Joi.string()
