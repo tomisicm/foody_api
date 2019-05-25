@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 import { CateringEstablishment } from './CateringEstablishment.model'
 
 export const getOneCateringEstablishment = async (req, res) => {
@@ -20,11 +22,30 @@ export const getOneCateringEstablishment = async (req, res) => {
 export const searchForCateringEstablishment = async (req, res) => {
   const { perPage, page } = req.query
 
-  const { name } = req.body
+  const { name, address } = req.body
 
   let query = {}
 
+  // TODO: Refactor later
   if (name) query = { name: { $regex: name, $options: 'i' } }
+  if (!_.isEmpty(address.city)) {
+    query = {
+      ...query,
+      'address.city': { $regex: address.city, $options: 'i' }
+    }
+  }
+  if (!_.isEmpty(address.street)) {
+    query = {
+      ...query,
+      'address.street': { $regex: address.street, $options: 'i' }
+    }
+  }
+  if (address.streetNo) {
+    query = {
+      ...query,
+      'address.streetNo': { $eq: address.streetNo }
+    }
+  }
 
   const options = {
     sort: 'createdAt',
