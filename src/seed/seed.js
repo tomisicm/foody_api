@@ -1,11 +1,15 @@
 const mongoose = require('mongoose')
 const dummy = require('mongoose-dummy')
 
+const ignoredFields = ['_id', 'created_at', '__v', /detail.*_info/]
+
 mongoose.connect('mongodb://localhost:27017/food_rating', {
   useNewUrlParser: true
 })
 
 // const ignoredFields = ['_id', 'created_at', '__v', /detail.*_info/]
+
+let foodOrigin = ['Thai', 'Japanese', 'Italian']
 
 const cateringEstablishment = new mongoose.Schema(
   {
@@ -19,18 +23,18 @@ const cateringEstablishment = new mongoose.Schema(
       city: String,
       street: String,
       streetNo: Number
-    }
-  },
-  {
-    toObject: {
-      transform: function(doc, ret) {
-        delete ret.__v
+    },
+    foodOrigin: {
+      name: {
+        type: String,
+        enum: foodOrigin
       }
     },
-    toJSON: {
-      transform: function(doc, ret) {
-        delete ret.__v
-      }
+    rating: {
+      type: Number
+    },
+    michelinStars: {
+      type: Number
     }
   },
   { timestamps: true }
@@ -38,13 +42,11 @@ const cateringEstablishment = new mongoose.Schema(
 
 let model = mongoose.model('cateringEstablishment', cateringEstablishment)
 
-for (let i = 0; i < 50; i++) {
+for (let i = 0; i < 5; i++) {
   let randomObject = dummy(model, {
-    /* ignore: ignoredFields */
+    ignore: ignoredFields,
     returnDate: true
   })
 
   model.create(randomObject)
 }
-
-mongoose.connection.close()
