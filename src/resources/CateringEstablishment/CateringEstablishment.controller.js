@@ -17,6 +17,35 @@ export const getOneCateringEstablishment = async (req, res) => {
   }
 }
 
+export const searchForCateringEstablishment = async (req, res) => {
+  const { perPage, page } = req.query
+
+  const { name } = req.body
+
+  let query = {}
+
+  if (name) query = { name: { $regex: name, $options: 'i' } }
+
+  const options = {
+    sort: 'createdAt',
+    page: parseInt(page, 10) || 1,
+    limit: parseInt(perPage, 10) || 10
+  }
+
+  try {
+    const doc = await CateringEstablishment.paginate(query, options)
+
+    if (!doc) {
+      return res.status(400).end()
+    }
+
+    res.status(200).json({ data: doc })
+  } catch (e) {
+    console.error(e)
+    res.status(400).end()
+  }
+}
+
 // this route might not be necassary
 export const getManyCateringEstablishment = async (req, res) => {
   const { perPage, page } = req.query
@@ -72,9 +101,16 @@ export const deleteCateringEstablishment = async (req, res) => {
   }
 }
 
+/* 
+function setupQuery(queryObject, newQueryProp) {
+  queryObject = {...queryObject, newQueryProp}
+} 
+*/
+
 export default {
   createOne: createCateringEstablishment,
   getOne: getOneCateringEstablishment,
   getMany: getManyCateringEstablishment,
+  searchFor: searchForCateringEstablishment,
   deleteOne: deleteCateringEstablishment
 }

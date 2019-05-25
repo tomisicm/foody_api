@@ -8,6 +8,8 @@ router.route('/').post(protect, controllers.createOne)
 
 router.route('/').get(controllers.getMany)
 
+router.route('/search').post(controllers.searchFor)
+
 router.route('/:id').get(controllers.getOne)
 
 export default router
