@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-import { CateringEstablishment } from './CateringEstablishment.model'
+import { CateringEstablishment } from './cateringEstablishment.model'
 
 export const getOneCateringEstablishment = async (req, res) => {
   try {
