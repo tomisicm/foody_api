@@ -12,10 +12,6 @@ export const getManyCuisines = async (req, res) => {
   try {
     const doc = await Cuisine.paginate({}, options)
 
-    if (!doc) {
-      return res.status(400).end()
-    }
-
     res.status(200).json({ data: doc })
   } catch (e) {
     console.error(e)

@@ -70,10 +70,6 @@ export const searchForCateringEstablishment = async (req, res) => {
   try {
     const doc = await CateringEstablishment.paginate(query, options)
 
-    if (!doc) {
-      return res.status(400).end()
-    }
-
     res.status(200).json({ data: doc })
   } catch (e) {
     console.error(e)
@@ -93,10 +89,6 @@ export const getManyCateringEstablishment = async (req, res) => {
 
   try {
     const doc = await CateringEstablishment.paginate({}, options)
-
-    if (!doc) {
-      return res.status(400).end()
-    }
 
     res.status(200).json({ data: doc })
   } catch (e) {

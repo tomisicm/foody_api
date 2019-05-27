@@ -5,6 +5,10 @@ import Joi from '@hapi/joi'
 
 const reivewSchema = new mongoose.Schema(
   {
+    item: {
+      type: mongoose.SchemaTypes.ObjectId,
+      required: true
+    },
     generalImpression: {
       type: String,
       trim: true,

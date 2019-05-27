@@ -7,9 +7,7 @@ mongoose.connect('mongodb://localhost:27017/food_rating', {
   useNewUrlParser: true
 })
 
-// const ignoredFields = ['_id', 'created_at', '__v', /detail.*_info/]
-
-let foodOrigin = ['Thai', 'Japanese', 'Italian', 'Pakistani', 'Indian']
+let cuisine = ['Thai', 'Japanese', 'Italian', 'Pakistani', 'Indian']
 
 const cateringEstablishment = new mongoose.Schema(
   {
@@ -27,7 +25,7 @@ const cateringEstablishment = new mongoose.Schema(
     cuisine: {
       name: {
         type: String,
-        enum: foodOrigin
+        enum: cuisine
       }
     },
     rating: {
