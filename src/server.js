@@ -14,6 +14,7 @@ import { connect } from './utils/db'
 import userRouter from './resources/user/user.router'
 import CateringEstablishmentRouter from './resources/CateringEstablishment/CateringEstablishment.router'
 import CuisineRouter from './resources/food/cuisine.router'
+import ReviewRouter from './resources/food/review.router'
 
 Joi.objectId = require('joi-objectid')(Joi)
 
@@ -34,6 +35,7 @@ app.use('/api', authorize)
 
 app.use('/api/catering', CateringEstablishmentRouter)
 app.use('/api/cuisine', CuisineRouter)
+app.use('/api/review', ReviewRouter)
 
 app.use('/api/user', userRouter)
 
