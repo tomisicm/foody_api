@@ -22,7 +22,7 @@ export const getOneCateringEstablishment = async (req, res) => {
 export const searchForCateringEstablishment = async (req, res) => {
   const { perPage, page } = req.query
 
-  const { name, address, foodOrigin, rating } = req.body
+  const { name, address, cuisine, rating } = req.body
 
   let query = {}
 
@@ -47,10 +47,10 @@ export const searchForCateringEstablishment = async (req, res) => {
     }
   }
 
-  if (!_.isEmpty(foodOrigin)) {
+  if (!_.isEmpty(cuisine)) {
     query = {
       ...query,
-      'foodOrigin.name': { $in: foodOrigin }
+      'cuisine.name': { $in: cuisine }
     }
   }
 

@@ -9,7 +9,7 @@ mongoose.connect('mongodb://localhost:27017/food_rating', {
 
 // const ignoredFields = ['_id', 'created_at', '__v', /detail.*_info/]
 
-let foodOrigin = ['Thai', 'Japanese', 'Italian']
+let foodOrigin = ['Thai', 'Japanese', 'Italian', 'Pakistani', 'Indian']
 
 const cateringEstablishment = new mongoose.Schema(
   {
@@ -24,7 +24,7 @@ const cateringEstablishment = new mongoose.Schema(
       street: String,
       streetNo: Number
     },
-    foodOrigin: {
+    cuisine: {
       name: {
         type: String,
         enum: foodOrigin
@@ -42,7 +42,7 @@ const cateringEstablishment = new mongoose.Schema(
 
 let model = mongoose.model('cateringEstablishment', cateringEstablishment)
 
-for (let i = 0; i < 5; i++) {
+for (let i = 0; i < 500; i++) {
   let randomObject = dummy(model, {
     ignore: ignoredFields,
     returnDate: true
