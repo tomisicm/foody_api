@@ -15,6 +15,7 @@ import userRouter from './resources/user/user.router'
 import CateringEstablishmentRouter from './resources/CateringEstablishment/CateringEstablishment.router'
 import CuisineRouter from './resources/food/cuisine.router'
 import ReviewRouter from './resources/review/review.router'
+import CommentRouter from './resources/review/comment.router'
 
 Joi.objectId = require('joi-objectid')(Joi)
 
@@ -31,13 +32,14 @@ app.use(morgan('dev'))
 app.post('/signup', signup)
 app.post('/signin', signin)
 
+app.use('/api/user', userRouter)
+
 app.use('/api', authorize)
 
-app.use('/api/catering', CateringEstablishmentRouter)
 app.use('/api/cuisine', CuisineRouter)
+app.use('/api/catering', CateringEstablishmentRouter)
 app.use('/api/review', ReviewRouter)
-
-app.use('/api/user', userRouter)
+app.use('/api/comment', CommentRouter)
 
 const start = async () => {
   try {

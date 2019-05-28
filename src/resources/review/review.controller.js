@@ -4,6 +4,10 @@ export const getReviewsByItemId = async (req, res) => {
   const { perPage, page } = req.query
 
   const options = {
+    populate: {
+      path: 'createdBy',
+      select: '_id name'
+    },
     sort: 'createdAt',
     page: parseInt(page, 10) || 1,
     limit: parseInt(perPage, 10) || 10
