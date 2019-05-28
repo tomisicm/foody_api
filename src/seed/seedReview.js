@@ -22,6 +22,12 @@ const reivewSchema = new mongoose.Schema(
     item: {
       type: mongoose.SchemaTypes.ObjectId
     },
+    title: {
+      type: String,
+      trim: true,
+      required: true,
+      maxlength: 50
+    },
     generalImpression: {
       type: String,
       trim: true,
