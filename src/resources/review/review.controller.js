@@ -23,6 +23,19 @@ export const getReviewsByItemId = async (req, res) => {
   }
 }
 
+// TODO: middleware where i will check if item is valid, exists
+export const createReview = async (req, res) => {
+  const createdBy = req.user._id
+  try {
+    const doc = await Review.create({ ...req.body, createdBy })
+    res.status(201).json({ data: doc })
+  } catch (e) {
+    console.error(e)
+    res.status(400).send(e)
+  }
+}
+
 export default {
-  getMany: getReviewsByItemId
+  getMany: getReviewsByItemId,
+  createReview: createReview
 }
