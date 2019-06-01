@@ -20,7 +20,7 @@ const commentSchema = new mongoose.Schema(
     },
     itemType: {
       type: String,
-      default: null
+      required: true
     },
     replayTo: {
       type: mongoose.SchemaTypes.ObjectId,

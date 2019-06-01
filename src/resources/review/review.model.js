@@ -15,6 +15,10 @@ const reivewSchema = new mongoose.Schema(
       type: mongoose.SchemaTypes.ObjectId,
       required: true
     },
+    itemType: {
+      type: String,
+      required: true
+    },
     generalImpression: {
       type: String,
       trim: true,
