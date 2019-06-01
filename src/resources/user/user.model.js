@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import mongoosePaginate from 'mongoose-paginate'
+import uniqueValidator from 'mongoose-unique-validator'
 import bcrypt from 'bcrypt'
 import Joi from '@hapi/joi'
 
@@ -15,6 +16,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
+      uniqueCaseInsensitive: true,
       trim: true,
       maxlength: 50
     },
@@ -87,6 +89,8 @@ userSchema.methods.isAdmin = function() {
 userSchema.statics.findByEmail = function(email) {
   return this.find({ email: new RegExp(email, 'i') })
 }
+
+userSchema.plugin(uniqueValidator)
 
 userSchema.plugin(mongoosePaginate)
 
