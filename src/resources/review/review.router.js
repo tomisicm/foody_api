@@ -9,6 +9,8 @@ router
   .route('/')
   .post(protect, findDocumentByModelAndId, controllers.createReview)
 
-router.route('/item/:itemId').get(controllers.getMany)
+router.route('/item/:itemId').get(controllers.getReviewsByItemId)
+
+router.route('/:id').get(controllers.getReviewById)
 
 export default router

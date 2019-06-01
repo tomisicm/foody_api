@@ -23,6 +23,16 @@ export const getReviewsByItemId = async (req, res) => {
   }
 }
 
+export const getReviewById = async (req, res) => {
+  try {
+    const doc = await Review.findById(req.params.id)
+    res.status(200).json({ data: doc })
+  } catch (e) {
+    console.error(e)
+    res.status(400).end()
+  }
+}
+
 // TODO: middleware where i will check if item is valid, exists
 export const createReview = async (req, res) => {
   const createdBy = req.user._id
@@ -36,6 +46,7 @@ export const createReview = async (req, res) => {
 }
 
 export default {
-  getMany: getReviewsByItemId,
-  createReview: createReview
+  getReviewsByItemId,
+  getReviewById,
+  createReview
 }
