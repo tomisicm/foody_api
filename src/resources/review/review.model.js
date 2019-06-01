@@ -21,17 +21,32 @@ const reivewSchema = new mongoose.Schema(
       required: true,
       maxlength: 500
     },
+    generalRating: {
+      type: Number,
+      min: 0,
+      max: 5
+    },
     foodSection: {
       type: String,
       trim: true,
       default: null,
       maxlength: 500
     },
+    foodRating: {
+      type: Number,
+      min: 0,
+      max: 5
+    },
     staffSection: {
       type: String,
       default: null,
       trim: true,
       maxlength: 500
+    },
+    staffRating: {
+      type: Number,
+      min: 0,
+      max: 5
     },
     createdBy: {
       type: mongoose.SchemaTypes.ObjectId,
