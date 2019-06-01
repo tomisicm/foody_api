@@ -5,6 +5,12 @@ import Joi from '@hapi/joi'
 
 const reivewSchema = new mongoose.Schema(
   {
+    title: {
+      type: String,
+      trim: true,
+      required: true,
+      maxlength: 50
+    },
     item: {
       type: mongoose.SchemaTypes.ObjectId,
       required: true
@@ -56,6 +62,10 @@ const reivewSchema = new mongoose.Schema(
 
 function validateObject(cuisine) {
   const schema = Joi.object().keys({
+    title: Joi.string()
+      .trim()
+      .required()
+      .max(50),
     generalImpression: Joi.string()
       .trim()
       .required()
