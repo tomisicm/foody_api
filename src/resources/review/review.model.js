@@ -63,6 +63,7 @@ const reivewSchema = new mongoose.Schema(
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'user'
     },
+    // this field will only be changable by admins
     locked: {
       type: Boolean,
       default: false
