@@ -1,4 +1,4 @@
-import { Review } from './review.model'
+import { Review, validateEditStatus } from './review.model'
 
 export const getReviewsByItemId = async (req, res) => {
   const { perPage, page } = req.query
@@ -45,8 +45,36 @@ export const createReview = async (req, res) => {
   }
 }
 
+// review approval is one way operation. this cannot be undone
+// TODO: research pre save hook, it might be better to do approval logic inside hook
+export const editReviewStatus = async (req, res) => {
+  const { error } = validateEditStatus(req.body)
+  if (error) return res.status(400).send(error)
+
+  try {
+    const doc = await Review.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: { locked: req.body.locked }
+      },
+      { new: true }
+    )
+
+    if (doc.approved == null && req.body.approved === true) {
+      doc.approved = req.user._id
+      await doc.save()
+    }
+
+    res.status(200).json({ data: doc })
+  } catch (e) {
+    console.error(e)
+    res.status(400).end()
+  }
+}
+
 export default {
   getReviewsByItemId,
   getReviewById,
-  createReview
+  createReview,
+  editReviewStatus
 }

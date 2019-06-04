@@ -99,7 +99,16 @@ function validateObject(cuisine) {
   return Joi.validate(cuisine, schema)
 }
 
+function validateEditStatus(cuisine) {
+  const schema = Joi.object().keys({
+    locked: Joi.boolean(),
+    approved: Joi.boolean()
+  })
+  return Joi.validate(cuisine, schema)
+}
+
 reivewSchema.plugin(mongoosePaginate)
 
 exports.validateObject = validateObject
+exports.validateEditStatus = validateEditStatus
 exports.Review = mongoose.model('review', reivewSchema)
