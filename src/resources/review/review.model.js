@@ -62,6 +62,10 @@ const reivewSchema = new mongoose.Schema(
       default: null,
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'user'
+    },
+    locked: {
+      type: Boolean,
+      default: false
     }
   },
   {
