@@ -6,7 +6,9 @@ export const findDocumentByModelAndId = async (req, res, next) => {
     const doc = await mongoose.model(req.body.itemType).findById(req.body.item)
 
     if (!doc) {
-      return res.status(400).send('no item')
+      return res.status(404).send({
+        message: 'no item found'
+      })
     }
     next()
   } catch (e) {

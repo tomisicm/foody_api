@@ -6,7 +6,7 @@ export const body = Joi.string()
   .max(500)
   .required()
 
-export const replayTo = Joi.objectId()
+export const replayTo = Joi.objectId().allow(null)
 
 export const item = Joi.objectId()
 export const itemType = Joi.string()
@@ -14,7 +14,8 @@ export const itemType = Joi.string()
 export const createObjectSchema = Joi.object().keys({
   body: body,
   item: item.required(),
-  itemType: itemType.required()
+  itemType: itemType.required(),
+  replayTo: replayTo
 })
 
 export const editObjectSchema = Joi.object().keys({
