@@ -84,7 +84,7 @@ const reivewSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
-function validateObject(cuisine) {
+function validateCreateObject(cuisine) {
   const schema = Joi.object().keys({
     title: Joi.string()
       .trim()
@@ -94,7 +94,8 @@ function validateObject(cuisine) {
       .trim()
       .required()
       .max(500),
-    foodSection: Joi.string()
+    foodSection: Joi.string(),
+    staffSection: Joi.string()
   })
   return Joi.validate(cuisine, schema)
 }
@@ -109,6 +110,6 @@ function validateEditStatus(cuisine) {
 
 reivewSchema.plugin(mongoosePaginate)
 
-exports.validateObject = validateObject
+exports.validateCreateObject = validateCreateObject
 exports.validateEditStatus = validateEditStatus
 exports.Review = mongoose.model('review', reivewSchema)

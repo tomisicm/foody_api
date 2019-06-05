@@ -1,4 +1,8 @@
-import { Review, validateEditStatus } from './review.model'
+import {
+  Review,
+  validateEditStatus,
+  validateCreateObject
+} from './review.model'
 
 export const getReviewsByItemId = async (req, res) => {
   const { perPage, page } = req.query
@@ -35,6 +39,9 @@ export const getReviewById = async (req, res) => {
 
 // TODO: middleware where i will check if item is valid, exists
 export const createReview = async (req, res) => {
+  const { error } = validateCreateObject(req.body)
+  if (error) return res.status(400).send(error)
+
   const createdBy = req.user._id
   try {
     const doc = await Review.create({ ...req.body, createdBy })
