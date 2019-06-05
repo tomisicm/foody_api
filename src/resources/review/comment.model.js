@@ -26,11 +26,18 @@ const commentSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    replayTo: {
+    replyTo: {
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'comment',
       default: null
-    }
+    },
+    thread: [
+      {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'comment',
+        default: null
+      }
+    ]
   },
   { timestamps: true }
 )

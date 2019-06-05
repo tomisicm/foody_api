@@ -8,17 +8,24 @@ const getCommentsByItemId = async (req, res) => {
   const { perPage, page } = req.query
 
   const options = {
-    populate: {
-      path: 'createdBy',
-      select: '_id name'
-    },
+    populate: [
+      {
+        path: 'createdBy',
+        select: '_id name'
+      },
+      { path: 'replyTo' },
+      { path: 'thread' }
+    ],
     sort: '-createdAt',
     page: parseInt(page, 10) || 1,
     limit: parseInt(perPage, 10) || 10,
     lean: true
   }
   try {
-    const docs = await Comment.paginate({ item: req.params.itemId }, options)
+    const docs = await Comment.paginate(
+      { item: req.params.itemId, replyTo: null },
+      options
+    )
     res.status(200).json({ data: docs })
   } catch (e) {
     console.error(e)
@@ -34,6 +41,13 @@ const createComment = async (req, res) => {
 
   try {
     const doc = await Comment.create({ ...req.body, createdBy })
+
+    await Comment.findByIdAndUpdate(
+      doc.replyTo,
+      { $push: { thread: doc } },
+      { safe: true, upsert: true }
+    )
+
     res.status(201).json({ data: doc })
   } catch (e) {
     console.error(e)
