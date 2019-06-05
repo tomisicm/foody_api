@@ -1,6 +1,10 @@
 import mongoose from 'mongoose'
 import mongoosePaginate from 'mongoose-paginate'
 
+import { createObjectSchema, editObjectSchema } from './comment.schema'
+
+import Joi from '@hapi/joi'
+
 const commentSchema = new mongoose.Schema(
   {
     body: {
@@ -31,6 +35,16 @@ const commentSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
+function validateEditObject(comment) {
+  return Joi.validate(comment, editObjectSchema)
+}
+
+function validateCreateObject(comment) {
+  return Joi.validate(comment, createObjectSchema)
+}
+
 commentSchema.plugin(mongoosePaginate)
 
-export const Comment = mongoose.model('comment', commentSchema)
+exports.validateCreateObject = validateCreateObject
+exports.validateEditObject = validateEditObject
+exports.Comment = mongoose.model('comment', commentSchema)
