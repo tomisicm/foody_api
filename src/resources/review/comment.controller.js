@@ -46,7 +46,7 @@ const editComment = async (req, res) => {
   if (error) return res.status(400).send(error)
 
   try {
-    /* const updatedDoc = await Comment.findOneAndUpdate(
+    const updatedDoc = await Comment.findOneAndUpdate(
       {
         createdBy: req.user._id,
         _id: req.params.id
@@ -55,14 +55,12 @@ const editComment = async (req, res) => {
       { new: true }
     )
       .lean()
-      .exec() */
-    console.log(req)
-
-    /* if (!updatedDoc) {
+      .exec()
+    if (!updatedDoc) {
       return res.status(400).end()
     }
 
-    res.status(200).json({ data: updatedDoc }) */
+    res.status(200).json({ data: updatedDoc })
   } catch (e) {
     console.error(e)
     res.status(400).end()
