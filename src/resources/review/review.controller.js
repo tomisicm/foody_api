@@ -1,7 +1,8 @@
 import {
   Review,
   validateEditStatus,
-  validateCreateObject
+  validateCreateObject,
+  validateEditObject
 } from './review.model'
 
 export const getReviewsByItemId = async (req, res) => {
@@ -58,6 +59,13 @@ export const editReviewStatus = async (req, res) => {
   const { error } = validateEditStatus(req.body)
   if (error) return res.status(400).send(error)
 
+  // only admins can change status.
+  // TODO: might be better in separate middleware
+  if (!req.user.admin)
+    return res
+      .status(400)
+      .send({ message: 'You do not have admin permissions' })
+
   try {
     const doc = await Review.findByIdAndUpdate(
       req.params.id,
@@ -79,9 +87,38 @@ export const editReviewStatus = async (req, res) => {
   }
 }
 
+// review can only be updated by its creator
+export const editReview = async (req, res) => {
+  const { error } = validateEditObject(req.body)
+  if (error) return res.status(400).send(error)
+
+  try {
+    const updatedDoc = await Review.findOneAndUpdate(
+      {
+        createdBy: req.user._id,
+        _id: req.params.id
+      },
+      req.body,
+      { new: true }
+    )
+      .lean()
+      .exec()
+
+    if (!updatedDoc) {
+      return res.status(400).send({ message: 'Review not found!' })
+    }
+
+    res.status(200).json({ data: updatedDoc })
+  } catch (e) {
+    console.error(e)
+    res.status(400).end()
+  }
+}
+
 export default {
   getReviewsByItemId,
   getReviewById,
   createReview,
+  editReview,
   editReviewStatus
 }

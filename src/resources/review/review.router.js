@@ -11,6 +11,8 @@ router
 
 router.route('/:id/status').put(controllers.editReviewStatus)
 
+router.route('/:id').put(controllers.editReview)
+
 router.route('/item/:itemId').get(controllers.getReviewsByItemId)
 
 router.route('/:id').get(controllers.getReviewById)
