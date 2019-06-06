@@ -44,11 +44,10 @@ const commentSchema = new mongoose.Schema(
 
 commentSchema.plugin(mongoosePaginate)
 
+// when comment is deleted, the whole thread is deleted
 commentSchema.pre('remove', async function() {
-  // console.log(this.replyTo)
   if (this.replyTo == null) {
-    const doc = await Comment.deleteMany({ replyTo: this._id })
-    console.log(doc)
+    await Comment.deleteMany({ replyTo: this._id })
   }
 })
 
