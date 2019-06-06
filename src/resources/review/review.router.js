@@ -10,11 +10,10 @@ router
   .post(protect, findDocumentByModelAndId, controllers.createReview)
 
 router.route('/:id/status').put(controllers.editReviewStatus)
-
 router.route('/:id').put(controllers.editReview)
 
+router.route('/').get(controllers.getReviews)
 router.route('/item/:itemId').get(controllers.getReviewsByItemId)
-
 router.route('/:id').get(controllers.getReviewById)
 
 export default router

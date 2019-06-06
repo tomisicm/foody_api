@@ -5,6 +5,29 @@ import {
   validateEditObject
 } from './review.model'
 
+export const getReviews = async (req, res) => {
+  const { perPage, page, sort = '-updatedAt' } = req.query
+
+  const options = {
+    populate: {
+      path: 'createdBy',
+      select: '_id name'
+    },
+    sort: sort,
+    page: parseInt(page, 10) || 1,
+    limit: parseInt(perPage, 10) || 10
+  }
+
+  try {
+    const doc = await Review.paginate({}, options)
+
+    res.status(200).json({ data: doc })
+  } catch (e) {
+    console.error(e)
+    res.status(400).end()
+  }
+}
+
 export const getReviewsByItemId = async (req, res) => {
   const { perPage, page } = req.query
 
@@ -125,6 +148,7 @@ export const editReview = async (req, res) => {
 }
 
 export default {
+  getReviews,
   getReviewsByItemId,
   getReviewById,
   createReview,
