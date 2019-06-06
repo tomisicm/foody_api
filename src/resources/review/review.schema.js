@@ -29,15 +29,17 @@ export const staffRating = Joi.number()
 export const item = Joi.objectId()
 export const itemType = Joi.string()
 
-export const editObjectSchema = Joi.object().keys({
-  title,
-  generalImpression,
-  generalRating,
-  foodSection,
-  foodRating,
-  staffSection,
-  staffRating
-})
+export const editObjectSchema = Joi.object()
+  .options({ stripUnknown: true })
+  .keys({
+    title,
+    generalImpression,
+    generalRating,
+    foodSection,
+    foodRating,
+    staffSection,
+    staffRating
+  })
 
 export const createObjectSchema = Joi.object().keys({
   title: title.required(),
