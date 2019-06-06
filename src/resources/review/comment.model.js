@@ -42,9 +42,17 @@ const commentSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
+commentSchema.plugin(mongoosePaginate)
+
 commentSchema.pre('remove', async function() {
-  console.log(this)
+  // console.log(this.replyTo)
+  if (this.replyTo == null) {
+    const doc = await Comment.deleteMany({ replyTo: this._id })
+    console.log(doc)
+  }
 })
+
+const Comment = mongoose.model('comment', commentSchema)
 
 function validateEditObject(comment) {
   return Joi.validate(comment, editObjectSchema)
@@ -54,8 +62,6 @@ function validateCreateObject(comment) {
   return Joi.validate(comment, createObjectSchema)
 }
 
-commentSchema.plugin(mongoosePaginate)
-
 exports.validateCreateObject = validateCreateObject
 exports.validateEditObject = validateEditObject
-exports.Comment = mongoose.model('comment', commentSchema)
+exports.Comment = Comment

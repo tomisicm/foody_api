@@ -29,7 +29,7 @@ const getCommentsByItemId = async (req, res) => {
     res.status(200).json({ data: docs })
   } catch (e) {
     console.error(e)
-    res.status(400).end()
+    res.status(400).send(e)
   }
 }
 
@@ -85,13 +85,15 @@ const editComment = async (req, res) => {
 
 export const deleteComment = async (req, res) => {
   try {
-    const doc = await Comment.findByIdAndRemove({
+    const doc = await Comment.findById({
       _id: req.params.id
     })
 
     if (!doc) {
       return res.status(400).end()
     }
+
+    await doc.remove()
 
     res.status(200).json({ data: doc })
   } catch (e) {
