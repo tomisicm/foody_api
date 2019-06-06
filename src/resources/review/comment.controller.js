@@ -42,11 +42,13 @@ const createComment = async (req, res) => {
   try {
     const doc = await Comment.create({ ...req.body, createdBy })
 
-    await Comment.findByIdAndUpdate(
-      doc.replyTo,
-      { $push: { thread: doc } },
-      { safe: true, upsert: true }
-    )
+    if (req.body.replyTo) {
+      await Comment.findByIdAndUpdate(
+        doc.replyTo,
+        { $push: { thread: doc } },
+        { safe: true, upsert: true }
+      )
+    }
 
     res.status(201).json({ data: doc })
   } catch (e) {
@@ -81,4 +83,26 @@ const editComment = async (req, res) => {
   }
 }
 
-export default { getCommentsByItemId, createComment, editComment }
+export const deleteComment = async (req, res) => {
+  try {
+    const doc = await Comment.findByIdAndRemove({
+      _id: req.params.id
+    })
+
+    if (!doc) {
+      return res.status(400).end()
+    }
+
+    res.status(200).json({ data: doc })
+  } catch (e) {
+    console.error(e)
+    res.status(400).end()
+  }
+}
+
+export default {
+  getCommentsByItemId,
+  createComment,
+  editComment,
+  deleteComment
+}

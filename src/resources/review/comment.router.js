@@ -14,4 +14,6 @@ router.route('/:id').put(protect, controllers.editComment)
 
 router.route('/item/:itemId').get(controllers.getCommentsByItemId)
 
+router.route('/:id').delete(protect, controllers.deleteComment)
+
 export default router

@@ -42,6 +42,10 @@ const commentSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
+commentSchema.pre('remove', async function() {
+  console.log(this)
+})
+
 function validateEditObject(comment) {
   return Joi.validate(comment, editObjectSchema)
 }
