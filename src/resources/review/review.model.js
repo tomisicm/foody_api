@@ -104,7 +104,15 @@ function validateEditStatus(cuisine) {
 
 reivewSchema.plugin(mongoosePaginate)
 
+/* reivewSchema.post('findOne', function(result) {  
+  if (result.locked) {
+
+  }
+})
+ */
+const Review = mongoose.model('review', reivewSchema)
+
 exports.validateCreateObject = validateCreateObject
 exports.validateEditObject = validateEditObject
 exports.validateEditStatus = validateEditStatus
-exports.Review = mongoose.model('review', reivewSchema)
+exports.Review = Review

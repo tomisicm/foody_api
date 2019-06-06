@@ -87,12 +87,25 @@ export const editReviewStatus = async (req, res) => {
   }
 }
 
-// review can only be updated by its creator
+// review content can only be updated by its creator
 export const editReview = async (req, res) => {
   const { error } = validateEditObject(req.body)
   if (error) return res.status(400).send(error)
 
   try {
+    let doc = await Review.findById({
+      _id: req.params.id
+    })
+
+    if (!doc) {
+      return res.status(400).send({ message: 'Review not found!' })
+    }
+
+    if (doc.locked)
+      return res
+        .status(400)
+        .send({ message: 'Review is locked and thus cannot be edited!' })
+
     const updatedDoc = await Review.findOneAndUpdate(
       {
         createdBy: req.user._id,
@@ -103,10 +116,6 @@ export const editReview = async (req, res) => {
     )
       .lean()
       .exec()
-
-    if (!updatedDoc) {
-      return res.status(400).send({ message: 'Review not found!' })
-    }
 
     res.status(200).json({ data: updatedDoc })
   } catch (e) {
