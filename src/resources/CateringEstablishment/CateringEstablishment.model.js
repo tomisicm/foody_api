@@ -18,11 +18,13 @@ const cateringEstablishmentSchema = new mongoose.Schema(
   },
   {
     toObject: {
+      virtuals: true,
       transform: function(doc, ret) {
         delete ret.__v
       }
     },
     toJSON: {
+      virtuals: true,
       transform: function(doc, ret) {
         delete ret.__v
       }
@@ -30,6 +32,10 @@ const cateringEstablishmentSchema = new mongoose.Schema(
   },
   { timestamps: true }
 )
+
+cateringEstablishmentSchema.virtual('fullAddress').get(function() {
+  return this.address.street + ', ' + this.address.streetNo + ', ' + this.city
+})
 
 const addressShema = Joi.object().keys({
   city: Joi.string()
