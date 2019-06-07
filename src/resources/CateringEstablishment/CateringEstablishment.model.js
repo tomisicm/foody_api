@@ -59,8 +59,10 @@ function validateObject(catering) {
 
 cateringEstablishmentSchema.plugin(mongoosePaginate)
 
-exports.validateObject = validateObject
-exports.CateringEstablishment = mongoose.model(
+const CateringEstablishment = mongoose.model(
   'cateringestablishment',
   cateringEstablishmentSchema
 )
+
+exports.validateObject = validateObject
+exports.CateringEstablishment = CateringEstablishment
