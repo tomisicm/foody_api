@@ -108,6 +108,10 @@ function validateEditStatus(cuisine) {
   return Joi.validate(cuisine, schema)
 }
 
+reivewSchema.virtual('totalRating').get(function() {
+  return (this.foodRating + this.staffRating + this.generalRating) / 3
+})
+
 reivewSchema.plugin(mongoosePaginate)
 
 const Review = mongoose.model('review', reivewSchema)
