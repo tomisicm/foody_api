@@ -42,14 +42,6 @@ const createComment = async (req, res) => {
   try {
     const doc = await Comment.create({ ...req.body, createdBy })
 
-    if (req.body.replyTo) {
-      await Comment.findByIdAndUpdate(
-        doc.replyTo,
-        { $push: { thread: doc } },
-        { safe: true, upsert: true }
-      )
-    }
-
     res.status(201).json({ data: doc })
   } catch (e) {
     console.error(e)

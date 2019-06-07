@@ -51,6 +51,16 @@ commentSchema.pre('remove', async function() {
   }
 })
 
+commentSchema.post('save', async function() {
+  if (this.replyTo) {
+    await Comment.findByIdAndUpdate(
+      this.replyTo,
+      { $push: { thread: this } },
+      { safe: true, upsert: true }
+    )
+  }
+})
+
 const Comment = mongoose.model('comment', commentSchema)
 
 function validateEditObject(comment) {
