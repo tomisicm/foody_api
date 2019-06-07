@@ -34,7 +34,13 @@ const cateringEstablishmentSchema = new mongoose.Schema(
 )
 
 cateringEstablishmentSchema.virtual('fullAddress').get(function() {
-  return this.address.street + ', ' + this.address.streetNo + ', ' + this.city
+  return (
+    this.address.street +
+    ', ' +
+    this.address.streetNo +
+    ', ' +
+    this.address.city
+  )
 })
 
 const addressShema = Joi.object().keys({
