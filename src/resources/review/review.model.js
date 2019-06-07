@@ -109,7 +109,10 @@ function validateEditStatus(cuisine) {
 }
 
 reivewSchema.virtual('totalRating').get(function() {
-  return (this.foodRating + this.staffRating + this.generalRating) / 3
+  return (
+    (this.foodRating + this.staffRating + this.generalRating) /
+    3
+  ).toFixed(1)
 })
 
 reivewSchema.plugin(mongoosePaginate)
