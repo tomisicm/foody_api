@@ -9,10 +9,15 @@ export const getReviews = async (req, res) => {
   const { perPage, page, sort = '-updatedAt' } = req.query
 
   const options = {
-    populate: {
-      path: 'createdBy',
-      select: '_id name'
-    },
+    populate: [
+      {
+        path: 'createdBy',
+        select: '_id name'
+      },
+      {
+        path: 'item'
+      }
+    ],
     sort: sort,
     page: parseInt(page, 10) || 1,
     limit: parseInt(perPage, 10) || 10

@@ -15,11 +15,13 @@ const reivewSchema = new mongoose.Schema(
     },
     item: {
       type: mongoose.SchemaTypes.ObjectId,
-      required: true
+      required: true,
+      refPath: 'itemType'
     },
     itemType: {
       type: String,
-      required: true
+      required: true,
+      enum: ['review', 'cateringestablishment']
     },
     generalImpression: {
       type: String,
@@ -73,11 +75,15 @@ const reivewSchema = new mongoose.Schema(
   },
   {
     toObject: {
+      getters: true,
+      virtuals: true,
       transform: function(doc, ret) {
         delete ret.__v
       }
     },
     toJSON: {
+      getters: true,
+      virtuals: true,
       transform: function(doc, ret) {
         delete ret.__v
       }
