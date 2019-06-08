@@ -36,23 +36,54 @@ export const getReviews = async (req, res) => {
 }
 
 export const searchForReviews = async (req, res) => {
-  const { perPage = 10, page = 1 } = req.query
+  const { title, catering, author } = req.body
 
-  const city = 'Jeremy68'
-  const street = 'Joel_Konopelski'
+  let match = {}
 
-  let query = {}
-
-  if (!_.isEmpty(city)) {
-    query = {
-      ...query,
-      'address.city': { $regex: city, $options: 'i' }
+  if (title) match = { title: { $regex: title, $options: 'i' } }
+  if (!_.isEmpty(catering.name)) {
+    match = {
+      ...match,
+      'catering.name': { $regex: catering.name, $options: 'i' }
     }
   }
-  if (!_.isEmpty(street)) {
-    query = {
-      ...query,
-      'address.street': { $regex: street, $options: 'i' }
+  if (!_.isEmpty(catering.address && catering.address.city)) {
+    match = {
+      ...match,
+      'catering.address.city': { $regex: catering.address.city, $options: 'i' }
+    }
+  }
+  if (!_.isEmpty(catering.address && catering.address.street)) {
+    match = {
+      ...match,
+      'catering.address.street': {
+        $regex: catering.address.street,
+        $options: 'i'
+      }
+    }
+  }
+  if (!_.isEmpty(catering.cuisine)) {
+    match = {
+      ...match,
+      'catering.cuisine.name': {
+        $regex: catering.cuisine,
+        $options: 'i'
+      }
+    }
+  }
+  if (!_.isEmpty(catering.michelinStars)) {
+    match = {
+      ...match,
+      'catering.michelinStars': { $gt: 0 }
+    }
+  }
+  if (!_.isEmpty(author)) {
+    match = {
+      ...match,
+      'author.name': {
+        $regex: author,
+        $options: 'i'
+      }
     }
   }
 
@@ -74,21 +105,16 @@ export const searchForReviews = async (req, res) => {
           foreignField: '_id',
           as: 'author'
         }
-      }
+      },
+      { $project: { 'author.password': 0 } },
+      { $unwind: '$author' },
+      { $match: match }
     ])
 
-    console.log(doc)
-
-    // const doc = await mongoose
-    //   .model('cateringestablishment')
-    //   .find(query, 'name address', function(err, result) {
-    //     console.log(result.map(x => x._id))
-    //   })
-    // console.log(doc)
     res.status(200).json({ data: doc })
   } catch (e) {
     console.error(e)
-    res.status(400).end()
+    res.status(400).send(e)
   }
 }
 
