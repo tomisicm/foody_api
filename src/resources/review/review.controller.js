@@ -113,22 +113,22 @@ export const searchForReviews = async (req, res) => {
       {
         $group: {
           _id: null,
-          count: { $sum: 1 },
-          data: { $push: '$$ROOT' }
+          total: { $sum: 1 },
+          docs: { $push: '$$ROOT' }
         }
       },
       {
         $project: {
-          data: {
-            $slice: ['$data', (page - 1) * perPage, perPage]
+          docs: {
+            $slice: ['$docs', (page - 1) * perPage, perPage]
           },
-          count: 1
+          total: 1
         }
       },
       { $project: { _id: 0 } }
     ])
 
-    res.status(200).json(doc)
+    res.status(200).json({ data: doc[0] })
   } catch (e) {
     console.error(e)
     res.status(400).send(e)
