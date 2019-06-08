@@ -36,6 +36,7 @@ export const getReviews = async (req, res) => {
 }
 
 export const searchForReviews = async (req, res) => {
+  const { page = 1, perPage = 10 } = req.query
   const { title, catering, author } = req.body
 
   let match = {}
@@ -108,10 +109,26 @@ export const searchForReviews = async (req, res) => {
       },
       { $project: { 'author.password': 0 } },
       { $unwind: '$author' },
-      { $match: match }
+      { $match: match },
+      {
+        $group: {
+          _id: null,
+          count: { $sum: 1 },
+          data: { $push: '$$ROOT' }
+        }
+      },
+      {
+        $project: {
+          data: {
+            $slice: ['$data', (page - 1) * perPage, perPage]
+          },
+          count: 1
+        }
+      },
+      { $project: { _id: 0 } }
     ])
 
-    res.status(200).json({ data: doc })
+    res.status(200).json(doc)
   } catch (e) {
     console.error(e)
     res.status(400).send(e)
