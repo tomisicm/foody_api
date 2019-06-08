@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 import {
   Review,
   validateEditStatus,
@@ -26,6 +28,63 @@ export const getReviews = async (req, res) => {
   try {
     const doc = await Review.paginate({}, options)
 
+    res.status(200).json({ data: doc })
+  } catch (e) {
+    console.error(e)
+    res.status(400).end()
+  }
+}
+
+export const searchForReviews = async (req, res) => {
+  const { perPage = 10, page = 1 } = req.query
+
+  const city = 'Jeremy68'
+  const street = 'Joel_Konopelski'
+
+  let query = {}
+
+  if (!_.isEmpty(city)) {
+    query = {
+      ...query,
+      'address.city': { $regex: city, $options: 'i' }
+    }
+  }
+  if (!_.isEmpty(street)) {
+    query = {
+      ...query,
+      'address.street': { $regex: street, $options: 'i' }
+    }
+  }
+
+  try {
+    let doc = await Review.aggregate([
+      {
+        $lookup: {
+          from: 'cateringestablishments',
+          localField: 'item',
+          foreignField: '_id',
+          as: 'catering'
+        }
+      },
+      { $unwind: '$catering' },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'createdBy',
+          foreignField: '_id',
+          as: 'author'
+        }
+      }
+    ])
+
+    console.log(doc)
+
+    // const doc = await mongoose
+    //   .model('cateringestablishment')
+    //   .find(query, 'name address', function(err, result) {
+    //     console.log(result.map(x => x._id))
+    //   })
+    // console.log(doc)
     res.status(200).json({ data: doc })
   } catch (e) {
     console.error(e)
@@ -153,6 +212,7 @@ export const editReview = async (req, res) => {
 }
 
 export default {
+  searchForReviews,
   getReviews,
   getReviewsByItemId,
   getReviewById,
