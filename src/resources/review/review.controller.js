@@ -36,8 +36,12 @@ export const getReviews = async (req, res) => {
 }
 
 export const searchForReviews = async (req, res) => {
-  const { page = 1, perPage = 10 } = req.query
-  const { title, catering, author } = req.body
+  let { page = 1, perPage = 10 } = req.query
+  const { title, catering, author, approved } = req.body
+
+  // deal with this later
+  page = parseInt(page, 10)
+  perPage = parseInt(perPage, 10)
 
   let match = {}
 
@@ -67,7 +71,7 @@ export const searchForReviews = async (req, res) => {
     match = {
       ...match,
       'catering.cuisine.name': {
-        $regex: catering.cuisine,
+        $regex: catering.cuisine.toString(),
         $options: 'i'
       }
     }
@@ -87,7 +91,15 @@ export const searchForReviews = async (req, res) => {
       }
     }
   }
+  // approved is true only for non-approved docs else it is falsy
+  if (approved) {
+    match = {
+      ...match,
+      approved: null
+    }
+  }
 
+  console.log(match)
   try {
     let doc = await Review.aggregate([
       {
