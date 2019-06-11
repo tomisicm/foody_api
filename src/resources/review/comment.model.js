@@ -20,11 +20,13 @@ const commentSchema = new mongoose.Schema(
     },
     item: {
       type: mongoose.SchemaTypes.ObjectId,
-      required: true
+      required: true,
+      refPath: 'itemType'
     },
     itemType: {
       type: String,
-      required: true
+      required: true,
+      enum: ['review', 'cateringestablishment']
     },
     replyTo: {
       type: mongoose.SchemaTypes.ObjectId,

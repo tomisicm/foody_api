@@ -185,9 +185,16 @@ export const createReview = async (req, res) => {
   const { error } = validateCreateObject(req.body)
   if (error) return res.status(400).send(error)
 
+  const avgRating = (
+    [req.body.generalRating, req.body.foodRating, req.body.staffRating].reduce(
+      (p, c) => p + c,
+      0
+    ) / 3
+  ).toFixed(1)
+
   const createdBy = req.user._id
   try {
-    const doc = await Review.create({ ...req.body, createdBy })
+    const doc = await Review.create({ ...req.body, createdBy, avgRating })
     res.status(201).json({ data: doc })
   } catch (e) {
     console.error(e)
