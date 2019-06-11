@@ -56,6 +56,11 @@ const reivewSchema = new mongoose.Schema(
       min: 0,
       max: 5
     },
+    avgRating: {
+      type: Number,
+      min: 0,
+      max: 5
+    },
     createdBy: {
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'user',
