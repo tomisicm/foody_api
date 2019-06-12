@@ -14,7 +14,15 @@ const getCommentsByItemId = async (req, res) => {
         select: '_id name'
       },
       { path: 'replyTo' },
-      { path: 'thread' }
+      {
+        path: 'thread',
+        populate: [
+          {
+            path: 'createdBy',
+            select: '_id name'
+          }
+        ]
+      }
     ],
     sort: '-createdAt',
     page: parseInt(page, 10) || 1,
