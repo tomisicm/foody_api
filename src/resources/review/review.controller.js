@@ -37,7 +37,7 @@ export const getReviews = async (req, res) => {
 
 export const searchForReviews = async (req, res) => {
   let { page = 1, perPage = 10 } = req.query
-  const { title, catering, author, approved } = req.body
+  const { review, catering } = req.body
 
   // deal with this later
   page = parseInt(page, 10)
@@ -45,7 +45,28 @@ export const searchForReviews = async (req, res) => {
 
   let match = {}
 
-  if (title) match = { title: { $regex: title, $options: 'i' } }
+  if (!_.isEmpty(review.title)) {
+    match = {
+      ...match,
+      title: { $regex: review.title, $options: 'i' }
+    }
+  }
+  if (!_.isEmpty(review.author)) {
+    match = {
+      ...match,
+      'author.name': {
+        $regex: review.author,
+        $options: 'i'
+      }
+    }
+  }
+  // approved is true only for non-approved docs else it is falsy
+  if (review.approved) {
+    match = {
+      ...match,
+      approved: null
+    }
+  }
   if (!_.isEmpty(catering.name)) {
     match = {
       ...match,
@@ -80,22 +101,6 @@ export const searchForReviews = async (req, res) => {
     match = {
       ...match,
       'catering.michelinStars': { $gt: 0 }
-    }
-  }
-  if (!_.isEmpty(author)) {
-    match = {
-      ...match,
-      'author.name': {
-        $regex: author,
-        $options: 'i'
-      }
-    }
-  }
-  // approved is true only for non-approved docs else it is falsy
-  if (approved) {
-    match = {
-      ...match,
-      approved: null
     }
   }
 
@@ -140,7 +145,7 @@ export const searchForReviews = async (req, res) => {
       { $project: { _id: 0 } }
     ])
 
-    res.status(200).json({ data: doc[0] })
+    res.status(200).json({ data: doc[0] || { docs: [], total: 0 } })
   } catch (e) {
     console.error(e)
     res.status(400).send(e)
