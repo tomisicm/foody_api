@@ -190,6 +190,7 @@ export const createReview = async (req, res) => {
   const { error } = validateCreateObject(req.body)
   if (error) return res.status(400).send(error)
 
+  // TODO: update route is missing this logic
   const avgRating = (
     [req.body.generalRating, req.body.foodRating, req.body.staffRating].reduce(
       (p, c) => p + c,
@@ -199,7 +200,13 @@ export const createReview = async (req, res) => {
 
   const createdBy = req.user._id
   try {
-    const doc = await Review.create({ ...req.body, createdBy, avgRating })
+    const doc = await Review.create({
+      ...req.body,
+      createdBy,
+      avgRating
+    })
+      .populate('createdBy')
+      .exec()
     res.status(201).json({ data: doc })
   } catch (e) {
     console.error(e)
