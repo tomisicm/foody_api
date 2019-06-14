@@ -78,6 +78,7 @@ const reivewSchema = new mongoose.Schema(
       default: false
     }
   },
+  { timestamps: true },
   {
     toObject: {
       getters: true,
@@ -93,8 +94,7 @@ const reivewSchema = new mongoose.Schema(
         delete ret.__v
       }
     }
-  },
-  { timestamps: true }
+  }
 )
 
 function validateCreateObject(cuisine) {
