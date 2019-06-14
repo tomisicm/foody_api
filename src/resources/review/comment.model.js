@@ -57,7 +57,14 @@ commentSchema.post('save', async function() {
   if (this.replyTo) {
     await Comment.findByIdAndUpdate(
       this.replyTo,
-      { $push: { thread: this } },
+      {
+        $push: {
+          thread: {
+            $each: [this],
+            $position: 0
+          }
+        }
+      },
       { safe: true, upsert: true }
     )
   }
