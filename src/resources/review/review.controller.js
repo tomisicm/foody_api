@@ -160,7 +160,7 @@ export const getReviewsByItemId = async (req, res) => {
       path: 'createdBy',
       select: '_id name'
     },
-    sort: '-createdAt',
+    sort: { avgRating: -1 },
     page: parseInt(page, 10) || 1,
     limit: parseInt(perPage, 10) || 10
   }
@@ -208,8 +208,8 @@ export const createReview = async (req, res) => {
       createdBy,
       avgRating
     })
-      .populate('createdBy')
-      .exec()
+
+    await doc.populate('createdBy').execPopulate()
     res.status(201).json({ data: doc })
   } catch (e) {
     console.error(e)
