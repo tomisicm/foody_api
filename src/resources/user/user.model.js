@@ -4,6 +4,17 @@ import uniqueValidator from 'mongoose-unique-validator'
 import bcrypt from 'bcrypt'
 import Joi from '@hapi/joi'
 
+const userProfileSchema = new mongoose.Schema({
+  profession: {
+    type: String,
+    default: null
+  },
+  avatar: {
+    type: String,
+    default: null
+  }
+})
+
 const userSchema = new mongoose.Schema(
   {
     name: {
@@ -33,6 +44,10 @@ const userSchema = new mongoose.Schema(
     admin: {
       type: Boolean,
       default: false
+    },
+    profile: {
+      type: userProfileSchema,
+      default: null
     }
   },
   {
