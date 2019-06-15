@@ -27,6 +27,11 @@ export const updateMe = async (req, res) => {
   }
 }
 
+export const updateAvatar = async (req, res) => {
+  console.log(req.file)
+  console.log(req.body)
+}
+
 export const getUsersByNameOrEmail = async (req, res) => {
   let rq = req.query
   const { perPage, page } = req.query

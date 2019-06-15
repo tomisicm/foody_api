@@ -32,9 +32,9 @@ app.use(morgan('dev'))
 app.post('/signup', signup)
 app.post('/signin', signin)
 
-app.use('/api/user', userRouter)
-
 app.use('/api', authorize)
+
+app.use('/api/user', userRouter)
 
 app.use('/api/cuisine', CuisineRouter)
 app.use('/api/catering', CateringEstablishmentRouter)
