@@ -29,6 +29,8 @@ app.use(json())
 app.use(urlencoded({ extended: true }))
 app.use(morgan('dev'))
 
+app.use('/uploads', express.static('uploads'))
+
 app.post('/signup', signup)
 app.post('/signin', signin)
 

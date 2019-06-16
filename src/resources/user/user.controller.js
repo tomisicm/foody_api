@@ -28,8 +28,23 @@ export const updateMe = async (req, res) => {
 }
 
 export const updateAvatar = async (req, res) => {
-  console.log(req.file)
-  console.log(req.body)
+  const profile = {
+    avatar: req.file.path
+  }
+
+  try {
+    const user = await User.findByIdAndUpdate(
+      req.user._id,
+      { profile },
+      {
+        new: true
+      }
+    )
+    res.status(200).json({ data: user })
+  } catch (e) {
+    console.error(e)
+    res.status(400).end()
+  }
 }
 
 export const getUsersByNameOrEmail = async (req, res) => {
