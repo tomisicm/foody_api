@@ -36,7 +36,7 @@ const router = Router()
 router.get('/', protect, me)
 router.put('/', protect, updateMe)
 
-router.put('/avatar', protect, upload.single('avatar'), updateAvatar)
+router.post('/avatar', protect, upload.single('file'), updateAvatar)
 
 router.get('/all', getUsersByNameOrEmail)
 

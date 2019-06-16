@@ -29,6 +29,7 @@ export const updateMe = async (req, res) => {
 }
 
 export const updateAvatar = async (req, res) => {
+  console.log(req)
   if (!req.file) {
     return res.status(400).end()
   }
