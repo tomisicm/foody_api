@@ -29,7 +29,7 @@ app.use(json())
 app.use(urlencoded({ extended: true }))
 app.use(morgan('dev'))
 
-app.use('/uploads', express.static('uploads'))
+app.use('/public', express.static('public'))
 
 app.post('/signup', signup)
 app.post('/signin', signin)
