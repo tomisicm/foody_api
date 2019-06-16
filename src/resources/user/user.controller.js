@@ -2,6 +2,7 @@ import { User } from './user.model'
 
 import _ from 'lodash'
 
+// TODO: Take a look at this.
 export const me = async (req, res) => {
   try {
     const user = await User.findById(req.user._id)
@@ -28,6 +29,12 @@ export const updateMe = async (req, res) => {
 }
 
 export const updateAvatar = async (req, res) => {
+  if (!req.file) {
+    return res.status(400).end()
+  }
+
+  // const filePath = req.protocol + '://' + req.hostname + '/' + req.file.path
+
   const profile = {
     avatar: req.file.path
   }
