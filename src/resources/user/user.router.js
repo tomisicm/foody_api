@@ -10,16 +10,18 @@ import { protect } from '../../utils/auth'
 
 import multer from 'multer'
 
+// currently saving all images as .png
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
     cb(null, './public/avatars')
   },
   filename: function(req, file, cb) {
-    cb(null, new Date().toISOString() + file.originalname)
+    cb(null, new Date().toISOString() + '.png')
   }
 })
 const imageFilter = (req, file, cb) => {
-  if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
+  // !file.originalname.match(/\.(jpg|jpeg|png|gif)$/
+  if (!file.mimetype === 'image/png') {
     return cb(new Error('Only image files are allowed!'), false)
   } else {
     cb(null, true)
