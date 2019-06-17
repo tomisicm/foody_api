@@ -6,7 +6,7 @@ import _ from 'lodash'
 export const me = async (req, res) => {
   try {
     const user = await User.findById(req.user._id)
-    res.status(200).send(user.toJSON())
+    res.status(200).send({ data: user })
   } catch (e) {
     console.error(e)
     res.status(400).end()
