@@ -14,8 +14,16 @@ export const me = async (req, res) => {
 }
 
 export const updateMe = async (req, res) => {
+  const updateObj = {
+    name: req.body.username,
+    email: req.body.email,
+    profile: {
+      profession: req.body.profession
+    }
+  }
+
   try {
-    const user = await User.findByIdAndUpdate(req.user._id, req.body, {
+    const user = await User.findByIdAndUpdate(req.user._id, updateObj, {
       new: true
     })
       .lean()
