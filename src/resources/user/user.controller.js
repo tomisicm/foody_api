@@ -14,20 +14,14 @@ export const me = async (req, res) => {
 }
 
 export const updateMe = async (req, res) => {
-  const updateObj = {
-    name: req.body.username,
-    email: req.body.email,
-    profile: {
-      profession: req.body.profession
-    }
-  }
-
   try {
-    const user = await User.findByIdAndUpdate(req.user._id, updateObj, {
-      new: true
-    })
-      .lean()
-      .exec()
+    let user = await User.findById(req.user._id)
+
+    user.name = req.body.username
+    user.email = req.body.email
+    user.profile.profession = req.body.profession
+
+    user = await user.save()
 
     res.status(200).json({ data: user })
   } catch (e) {
@@ -43,18 +37,13 @@ export const updateAvatar = async (req, res) => {
 
   // const filePath = req.protocol + '://' + req.hostname + '/' + req.file.path
 
-  const profile = {
-    avatar: req.file.path
-  }
-
   try {
-    const user = await User.findByIdAndUpdate(
-      req.user._id,
-      { profile },
-      {
-        new: true
-      }
-    )
+    const user = await User.findById(req.user._id)
+
+    user.profile.avatar = req.file.path
+
+    await user.save()
+
     res.status(200).json({ data: user })
   } catch (e) {
     console.error(e)
