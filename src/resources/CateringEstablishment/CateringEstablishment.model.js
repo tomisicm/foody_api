@@ -14,7 +14,39 @@ const cateringEstablishmentSchema = new mongoose.Schema(
     address: {
       type: Object,
       default: null
-    }
+    },
+    contactInformation: {
+      type: Array,
+      required: true
+    },
+    website: {
+      type: String,
+      default: null
+    },
+    cuisine: [
+      {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'cuisine',
+        default: null
+      }
+    ],
+    michelinStars: {
+      type: Number,
+      default: 0
+    },
+    // IF OWNER IS NOT SPECIFIED I HAVE TO MAINTAIN THE PAGE
+    owner: {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: 'user',
+      default: null
+    },
+    pageMaintainedBy: [
+      {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'user',
+        required: true
+      }
+    ]
   },
   {
     toObject: {
