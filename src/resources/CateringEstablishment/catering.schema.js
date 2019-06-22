@@ -28,7 +28,8 @@ export const createObjectSchema = Joi.object().keys({
         .required()
         .min(1)
     )
-    .required()
+    .required(),
+  images: Joi.array().items(Joi.string().min(1))
 })
 
 export const editObjectSchema = Joi.object().keys({})
