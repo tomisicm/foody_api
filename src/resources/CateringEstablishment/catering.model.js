@@ -35,6 +35,7 @@ const cateringEstablishmentSchema = new mongoose.Schema(
       type: Number,
       default: 0
     },
+    images: [],
     owner: {
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'user',
