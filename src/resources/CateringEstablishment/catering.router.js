@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import controllers from './cateringEstablishment.controller'
+import controllers from './catering.controller'
 import { protect } from '../../utils/auth'
 
 const router = Router()
