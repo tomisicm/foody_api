@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 import mongoosePaginate from 'mongoose-paginate'
 import Joi from '@hapi/joi'
 
-import { createObjectSchema } from '../../commonSchemas/address.schema'
+import { createObjectSchema } from './catering.schema'
 
 const cateringEstablishmentSchema = new mongoose.Schema(
   {

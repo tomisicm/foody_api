@@ -110,8 +110,6 @@ export const createCateringEstablishment = async (req, res) => {
   const { error } = validateCreateObject(req.body)
   if (error) return res.status(400).send(error)
 
-  console.log(error)
-
   try {
     const doc = await CateringEstablishment.create({ ...req.body, createdBy })
     res.status(201).json({ data: doc })

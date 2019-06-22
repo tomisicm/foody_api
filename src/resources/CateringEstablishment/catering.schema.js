@@ -20,9 +20,15 @@ export const createObjectSchema = Joi.object().keys({
   ),
   website: Joi.string().allow(null),
   cuisine: Joi.array().items(Joi.objectId()),
-  michelinStars: Joi.number().allow(null),
+  michelinStars: Joi.number(),
   owner: Joi.objectId(),
-  pageMaintainedBy: Joi.array().items(Joi.objectId())
+  pageMaintainedBy: Joi.array()
+    .items(
+      Joi.objectId()
+        .required()
+        .min(1)
+    )
+    .required()
 })
 
 export const editObjectSchema = Joi.object().keys({})
