@@ -1,13 +1,14 @@
 import mongoose from 'mongoose'
 import mongoosePaginate from 'mongoose-paginate'
-
 import Joi from '@hapi/joi'
+
+import { createObjectSchema } from '../../commonSchemas/address.schema'
 
 const cateringEstablishmentSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      default: null,
+      required: true,
       trim: true,
       maxlength: 50
     },
@@ -34,7 +35,6 @@ const cateringEstablishmentSchema = new mongoose.Schema(
       type: Number,
       default: 0
     },
-    // IF OWNER IS NOT SPECIFIED I HAVE TO MAINTAIN THE PAGE
     owner: {
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'user',
@@ -75,30 +75,8 @@ cateringEstablishmentSchema.virtual('fullAddress').get(function() {
   )
 })
 
-const addressShema = Joi.object().keys({
-  city: Joi.string()
-    .trim()
-    .max(50)
-    .required(),
-  street: Joi.string()
-    .trim()
-    .max(50),
-  streetNo: Joi.string()
-    .trim()
-    .max(50)
-})
-
-function validateObject(catering) {
-  const schema = {
-    name: Joi.string()
-      .trim()
-      .max(50)
-      .required(),
-    address: addressShema,
-    foodType: [Joi.string()],
-    openingYear: Joi.date()
-  }
-  return Joi.validate(catering, schema)
+function validateCreateObject(catering) {
+  return Joi.validate(catering, createObjectSchema)
 }
 
 cateringEstablishmentSchema.plugin(mongoosePaginate)
@@ -108,5 +86,5 @@ const CateringEstablishment = mongoose.model(
   cateringEstablishmentSchema
 )
 
-exports.validateObject = validateObject
+exports.validateCreateObject = validateCreateObject
 exports.CateringEstablishment = CateringEstablishment

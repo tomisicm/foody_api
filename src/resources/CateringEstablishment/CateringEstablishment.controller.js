@@ -1,6 +1,9 @@
 import _ from 'lodash'
 
-import { CateringEstablishment } from './cateringEstablishment.model'
+import {
+  CateringEstablishment,
+  validateCreateObject
+} from './cateringEstablishment.model'
 
 export const getOneCateringEstablishment = async (req, res) => {
   try {
@@ -21,6 +24,8 @@ export const getOneCateringEstablishment = async (req, res) => {
 
 export const searchForCateringEstablishment = async (req, res) => {
   const { perPage, page } = req.query
+
+  console.log(req.body)
 
   const { name, address, cuisine, ratingRange } = req.body
 
@@ -67,6 +72,8 @@ export const searchForCateringEstablishment = async (req, res) => {
     limit: parseInt(perPage, 10) || 10
   }
 
+  console.log(query)
+
   try {
     const doc = await CateringEstablishment.paginate(query, options)
 
@@ -99,6 +106,11 @@ export const getManyCateringEstablishment = async (req, res) => {
 
 export const createCateringEstablishment = async (req, res) => {
   const createdBy = req.user._id
+
+  const { error } = validateCreateObject(req.body)
+  if (error) return res.status(400).send(error)
+
+  console.log(error)
 
   try {
     const doc = await CateringEstablishment.create({ ...req.body, createdBy })
