@@ -20,7 +20,7 @@ export const createObjectSchema = Joi.object().keys({
   ),
   website: Joi.string().allow(''),
   cuisine: Joi.array(),
-  michelinStars: Joi.number(),
+  michelinStars: Joi.number().default(0),
   owner: Joi.objectId(),
   pageMaintainedBy: Joi.array()
     .items(
