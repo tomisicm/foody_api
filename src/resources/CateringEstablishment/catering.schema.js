@@ -22,14 +22,8 @@ export const createObjectSchema = Joi.object().keys({
   cuisine: Joi.array(),
   michelinStars: Joi.number().default(0),
   owner: Joi.objectId(),
-  pageMaintainedBy: Joi.array()
-    .items(
-      Joi.objectId()
-        .required()
-        .min(1)
-    )
-    .required(),
-  images: Joi.array().items(Joi.string().min(1))
+  pageMaintainedBy: Joi.array().items(Joi.objectId()),
+  images: Joi.array().items(Joi.string())
 })
 
 export const editObjectSchema = Joi.object().keys({})
