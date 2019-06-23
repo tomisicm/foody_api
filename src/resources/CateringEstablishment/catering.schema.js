@@ -18,8 +18,8 @@ export const createObjectSchema = Joi.object().keys({
       { name: 'phone number' }
     )
   ),
-  website: Joi.string().allow(null),
-  cuisine: Joi.array().items(Joi.objectId()),
+  website: Joi.string().allow(''),
+  cuisine: Joi.array(),
   michelinStars: Joi.number(),
   owner: Joi.objectId(),
   pageMaintainedBy: Joi.array()
