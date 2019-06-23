@@ -64,6 +64,7 @@ export const searchForCateringEstablishment = async (req, res) => {
   }
 
   const options = {
+    populate: [{ path: 'cuisine' }],
     sort: 'createdAt',
     page: parseInt(page, 10) || 1,
     limit: parseInt(perPage, 10) || 10
