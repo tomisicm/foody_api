@@ -41,6 +41,10 @@ const cateringEstablishmentSchema = new mongoose.Schema(
       ref: 'user',
       default: null
     },
+    rating: {
+      type: Number,
+      default: 5
+    },
     pageMaintainedBy: [
       {
         type: mongoose.SchemaTypes.ObjectId,
