@@ -3,6 +3,7 @@ import mongoosePaginate from 'mongoose-paginate'
 import Joi from '@hapi/joi'
 
 import { createObjectSchema } from './catering.schema'
+import { cuisineSchema } from '../food/cuisine.model'
 
 const cateringEstablishmentSchema = new mongoose.Schema(
   {
@@ -24,13 +25,7 @@ const cateringEstablishmentSchema = new mongoose.Schema(
       type: String,
       default: null
     },
-    cuisine: [
-      {
-        type: mongoose.SchemaTypes.ObjectId,
-        ref: 'cuisine',
-        default: null
-      }
-    ],
+    cuisine: [cuisineSchema],
     michelinStars: {
       type: Number,
       default: 0

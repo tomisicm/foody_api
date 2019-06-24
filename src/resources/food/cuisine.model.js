@@ -58,5 +58,6 @@ function validateObject(cuisine) {
 
 cuisineSchema.plugin(mongoosePaginate)
 
+exports.cuisineSchema = cuisineSchema
 exports.validateObject = validateObject
 exports.Cuisine = mongoose.model('cuisine', cuisineSchema)
