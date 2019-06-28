@@ -261,6 +261,9 @@ export const editReview = async (req, res) => {
   const { error } = validateEditObject(req.body)
   if (error) return res.status(400).send(error)
 
+  // TODO: replace req.body with value
+  // const { value } = validateEditObject(req.body)
+
   try {
     let doc = await Review.findById({
       _id: req.params.id

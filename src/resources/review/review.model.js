@@ -102,7 +102,7 @@ function validateCreateObject(cuisine) {
 }
 
 function validateEditObject(cuisine) {
-  return Joi.validate(cuisine, editObjectSchema)
+  return Joi.validate(cuisine, editObjectSchema, { stripUnknown: true })
 }
 
 function validateEditStatus(cuisine) {
