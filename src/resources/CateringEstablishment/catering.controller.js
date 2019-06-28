@@ -1,6 +1,10 @@
 import _ from 'lodash'
 
-import { CateringEstablishment, validateCreateObject } from './catering.model'
+import {
+  CateringEstablishment,
+  validateCreateObject,
+  validateEditObject
+} from './catering.model'
 
 export const getOneCateringEstablishment = async (req, res) => {
   try {
@@ -116,6 +120,29 @@ export const createCateringEstablishment = async (req, res) => {
   }
 }
 
+export const updateCateringEstablishment = async (req, res) => {
+  // const updatedBy = req.user._id
+
+  const { error, value } = validateEditObject(req.body)
+  if (error) return res.status(400).send(error)
+
+  // const { value } = validateEditObject(req.body)
+
+  try {
+    const doc = await CateringEstablishment.findByIdAndUpdate(
+      req.params.id,
+      value,
+      { new: true }
+    )
+    res.status(201).json({ data: doc })
+  } catch (e) {
+    console.error(e)
+    res.status(400).send(e)
+  }
+
+  res.status(201)
+}
+
 // add pre remove hook for deleting all the comments and reviews
 export const deleteCateringEstablishment = async (req, res) => {
   try {
@@ -143,6 +170,7 @@ function setupQuery(queryObject, newQueryProp) {
 
 export default {
   createOne: createCateringEstablishment,
+  editOne: updateCateringEstablishment,
   getOne: getOneCateringEstablishment,
   getMany: getManyCateringEstablishment,
   searchFor: searchForCateringEstablishment,

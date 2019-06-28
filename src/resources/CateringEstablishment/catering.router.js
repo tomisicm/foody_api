@@ -12,4 +12,6 @@ router.route('/search').post(controllers.searchFor)
 
 router.route('/:id').get(controllers.getOne)
 
+router.route('/:id').put(protect, controllers.editOne)
+
 export default router
