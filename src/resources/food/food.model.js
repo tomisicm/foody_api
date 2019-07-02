@@ -15,11 +15,6 @@ const foodSchema = new mongoose.Schema(
       type: String,
       enum: ['Popular', 'Spicy', 'Recommended']
     },
-    createdBy: {
-      type: mongoose.SchemaTypes.ObjectId,
-      ref: 'user',
-      required: true
-    },
     image: {
       type: String,
       default: null
@@ -36,6 +31,16 @@ const foodSchema = new mongoose.Schema(
     },
     price: {
       type: Number,
+      required: true
+    },
+    catering: {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: 'cateringestablishment',
+      required: true
+    },
+    createdBy: {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: 'user',
       required: true
     }
   },
