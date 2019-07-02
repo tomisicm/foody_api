@@ -1,6 +1,8 @@
 import mongoose from 'mongoose'
 import mongoosePaginate from 'mongoose-paginate'
 
+import { createObjectSchema, editObjectSchema } from '../food/food.schema'
+
 import Joi from '@hapi/joi'
 
 const foodSchema = new mongoose.Schema(
@@ -23,7 +25,7 @@ const foodSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-      maxlength: 55
+      maxlength: 255
     },
     portion: {
       type: Number,
@@ -59,26 +61,17 @@ const foodSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
-function validateObject(food) {
-  const schema = Joi.object().keys({
-    name: Joi.string()
-      .trim()
-      .max(30)
-      .required(),
-    tag: Joi.string().valid('Popular', 'Spicy', 'Recommended'),
-    image: Joi.string(),
-    description: Joi.string()
-      .trim()
-      .max(55)
-      .required(),
-    portion: Joi.number().required(),
-    price: Joi.number().required()
-  })
-  return Joi.validate(food, schema)
+function validateCreateObject(food) {
+  return Joi.validate(food, createObjectSchema, { stripUnknown: true })
+}
+
+function validateEditObject(food) {
+  return Joi.validate(food, editObjectSchema, { stripUnknown: true })
 }
 
 foodSchema.plugin(mongoosePaginate)
 
 exports.foodSchema = foodSchema
-exports.validateObject = validateObject
+exports.validateCreateObject = validateCreateObject
+exports.validateEditObject = validateEditObject
 exports.Food = mongoose.model('food', foodSchema)
