@@ -52,7 +52,22 @@ export const updateFood = async (req, res) => {
   }
 }
 
-export const deleteFood = async (req, res) => {}
+export const deleteFood = async (req, res) => {
+  try {
+    const doc = await Food.findById({
+      _id: req.params.id
+    })
+
+    if (!doc) return res.status(400).end()
+
+    await doc.remove()
+
+    res.status(200).json({ data: doc })
+  } catch (e) {
+    console.error(e)
+    res.status(400).end()
+  }
+}
 
 export default {
   createOne: createFood,

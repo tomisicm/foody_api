@@ -10,6 +10,6 @@ router.route('/catering/:id').get(controllers.getManyByCateringId)
 
 router.route('/:id').put(controllers.updateOne)
 
-router.route('/:id').put(controllers.deleteOne)
+router.route('/:id').delete(controllers.deleteOne)
 
 export default router
