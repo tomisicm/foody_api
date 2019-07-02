@@ -35,15 +35,12 @@ export const createFood = async (req, res) => {
 
 export const updateFood = async (req, res) => {
   try {
-    const updatedDoc = await Food.findOneAndUpdate(
-      {
-        catering: req.params.id
-      },
-      req.body,
-      { new: true }
-    )
+    const updatedDoc = await Food.findByIdAndUpdate(req.params.id, req.body, {
+      new: true
+    })
       .lean()
       .exec()
+
     if (!updatedDoc) {
       return res.status(400).end()
     }
