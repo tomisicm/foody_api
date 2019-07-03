@@ -6,7 +6,10 @@ export const createObjectSchema = Joi.object().keys({
     .trim()
     .max(30)
     .required(),
-  tag: Joi.string().valid('Popular', 'Spicy', 'Recommended'),
+  /* TODO */
+  tag: Joi.string()
+    .valid('Popular', 'Spicy', 'Recommended')
+    .required(),
   image: Joi.string(),
   description: Joi.string()
     .trim()
@@ -22,7 +25,9 @@ export const editObjectSchema = Joi.object().keys({
     .trim()
     .max(30)
     .required(),
-  tag: Joi.string().valid('Popular', 'Spicy', 'Recommended'),
+  tag: Joi.string()
+    .valid('Popular', 'Spicy', 'Recommended', '')
+    .allow('', null),
   image: Joi.string(),
   description: Joi.string()
     .trim()

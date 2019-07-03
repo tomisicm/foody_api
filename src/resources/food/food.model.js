@@ -13,9 +13,10 @@ const foodSchema = new mongoose.Schema(
       trim: true,
       maxlength: 30
     },
+    /* TODO */
     tag: {
       type: String,
-      enum: ['Popular', 'Spicy', 'Recommended']
+      enum: ['Popular', 'Spicy', 'Recommended', null]
     },
     image: {
       type: String,
@@ -46,6 +47,7 @@ const foodSchema = new mongoose.Schema(
       required: true
     }
   },
+  { timestamps: true },
   {
     toObject: {
       transform: function(doc, ret) {
@@ -57,8 +59,7 @@ const foodSchema = new mongoose.Schema(
         delete ret.__v
       }
     }
-  },
-  { timestamps: true }
+  }
 )
 
 function validateCreateObject(food) {
