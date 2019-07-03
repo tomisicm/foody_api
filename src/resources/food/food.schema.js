@@ -9,7 +9,6 @@ export const createObjectSchema = Joi.object().keys({
   /* TODO */
   tag: Joi.any()
     .valid('Popular', 'Spicy', 'Recommended', null)
-    .allow('')
     .required(),
   image: Joi.string(),
   description: Joi.string()
