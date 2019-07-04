@@ -27,8 +27,6 @@ export const createFood = async (req, res) => {
   const { error, value } = validateCreateObject(req.body)
   if (error) return res.status(400).send(error)
 
-  console.log(value)
-
   try {
     const doc = await Food.create({ ...value, createdBy })
     res.status(201).json({ data: doc })
@@ -39,8 +37,11 @@ export const createFood = async (req, res) => {
 }
 
 export const updateFood = async (req, res) => {
+  const { error, value } = validateEditObject(req.body)
+  if (error) return res.status(400).send(error)
+
   try {
-    const updatedDoc = await Food.findByIdAndUpdate(req.params.id, req.body, {
+    const updatedDoc = await Food.findByIdAndUpdate(req.params.id, value, {
       new: true
     })
       .lean()

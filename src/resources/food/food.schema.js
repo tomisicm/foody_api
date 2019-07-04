@@ -6,7 +6,6 @@ export const createObjectSchema = Joi.object().keys({
     .trim()
     .max(30)
     .required(),
-  /* TODO */
   tag: Joi.any()
     .valid('Popular', 'Spicy', 'Recommended', null)
     .required(),
@@ -25,13 +24,14 @@ export const editObjectSchema = Joi.object().keys({
     .trim()
     .max(30)
     .required(),
-  tag: Joi.string()
-    .valid('Popular', 'Spicy', 'Recommended', '')
-    .allow('', null),
+  tag: Joi.any()
+    .valid('Popular', 'Spicy', 'Recommended', null)
+    .required(),
   image: Joi.string(),
   description: Joi.string()
     .trim()
-    .max(55)
+    .max(255)
     .required(),
-  portion: Joi.number().required()
+  portion: Joi.number().required(),
+  price: Joi.number().required()
 })

@@ -13,7 +13,6 @@ const foodSchema = new mongoose.Schema(
       trim: true,
       maxlength: 30
     },
-    /* TODO */
     tag: {
       type: String,
       enum: ['Popular', 'Spicy', 'Recommended', null]
