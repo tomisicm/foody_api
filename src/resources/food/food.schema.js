@@ -9,7 +9,7 @@ export const createObjectSchema = Joi.object().keys({
   tag: Joi.any()
     .valid('Popular', 'Spicy', 'Recommended', null)
     .required(),
-  image: Joi.string(),
+  image: Joi.string().allow(null),
   description: Joi.string()
     .trim()
     .max(255)
@@ -27,7 +27,7 @@ export const editObjectSchema = Joi.object().keys({
   tag: Joi.any()
     .valid('Popular', 'Spicy', 'Recommended', null)
     .required(),
-  image: Joi.string(),
+  image: Joi.string().allow(null),
   description: Joi.string()
     .trim()
     .max(255)
