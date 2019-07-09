@@ -7,6 +7,9 @@ import {
   validateEditObject
 } from './review.model'
 
+const EventEmitter = require('events')
+const reviewEmitter = new EventEmitter()
+
 export const getReviews = async (req, res) => {
   const { perPage, page, sort = '-updatedAt' } = req.query
 
@@ -215,6 +218,9 @@ export const createReview = async (req, res) => {
     })
 
     await doc.populate('createdBy').execPopulate()
+
+    reviewEmitter.emit('reviewcreated')
+
     res.status(201).json({ data: doc })
   } catch (e) {
     console.error(e)
@@ -297,6 +303,7 @@ export const editReview = async (req, res) => {
 }
 
 export default {
+  reviewEmitter,
   searchForReviews,
   getReviews,
   getReviewsByItemId,
