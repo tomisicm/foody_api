@@ -1,5 +1,6 @@
 import EventEmitter from 'events'
 
+/* reviewNotifier */
 class ReviewHandler extends EventEmitter {}
 
 const reviewHandler = new ReviewHandler()

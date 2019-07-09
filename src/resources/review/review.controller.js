@@ -222,7 +222,7 @@ export const createReview = async (req, res) => {
 
     await doc.populate('createdBy').execPopulate()
 
-    console.log(reviewHandler.emit('dick'), doc)
+    console.log(reviewHandler.emit('dick', doc))
 
     res.status(201).json({ data: doc })
   } catch (e) {
