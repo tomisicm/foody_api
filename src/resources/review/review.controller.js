@@ -233,7 +233,7 @@ export const editReviewStatus = async (req, res) => {
   if (!req.user.admin)
     return res
       .status(400)
-      .send({ message: 'You do not have admin permissions' })
+      .send({ error: { message: 'You do not have admin permissions' } })
 
   try {
     const doc = await Review.findByIdAndUpdate(
@@ -244,7 +244,7 @@ export const editReviewStatus = async (req, res) => {
       { new: true }
     )
 
-    if (doc.approved == null && req.body.approved === true) {
+    if (!doc.approved && req.body.approved === true) {
       doc.approved = req.user._id
       await doc.save()
     }
