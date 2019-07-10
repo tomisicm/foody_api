@@ -106,13 +106,15 @@ export const getManyCateringEstablishment = async (req, res) => {
 }
 
 export const createCateringEstablishment = async (req, res) => {
-  const createdBy = req.user._id
-
-  const { error } = validateCreateObject(req.body)
+  const { error, value } = validateCreateObject(req.body)
   if (error) return res.status(400).send(error)
 
   try {
-    const doc = await CateringEstablishment.create({ ...req.body, createdBy })
+    const doc = await CateringEstablishment.create({
+      ...value,
+      pageMaintainedBy: req.user._id
+    })
+
     res.status(201).json({ data: doc })
   } catch (e) {
     console.error(e)

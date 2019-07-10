@@ -21,7 +21,7 @@ export const createObjectSchema = Joi.object().keys({
   website: Joi.string().allow(''),
   cuisine: Joi.array(),
   michelinStars: Joi.number().default(0),
-  owner: Joi.objectId(),
+  // owner: Joi.objectId(),
   pageMaintainedBy: Joi.array().items(Joi.objectId()),
   images: Joi.array().items(Joi.string())
 })
