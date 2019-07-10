@@ -329,6 +329,30 @@ export const likeReview = async (req, res) => {
   }
 }
 
+// when user not logged, no req.user._id
+export const likesReview = async (req, res) => {
+  const user = req.user._id ? req.user._id : null
+
+  try {
+    const doc = await Review.findById(req.params.id)
+
+    let data = {
+      reviewId: req.params.id
+    }
+
+    if (user) {
+      data.liked = doc.likedBy.includes(user)
+    }
+
+    data.likes = doc.likedBy.length
+
+    res.status(200).json({ data: data })
+  } catch (e) {
+    console.error(e)
+    res.status(400).end()
+  }
+}
+
 export default {
   searchForReviews,
   getReviews,
@@ -337,5 +361,6 @@ export default {
   createReview,
   editReview,
   editReviewStatus,
-  likeReview
+  likeReview,
+  likesReview
 }
