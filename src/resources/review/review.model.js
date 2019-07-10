@@ -76,7 +76,13 @@ const reivewSchema = new mongoose.Schema(
     locked: {
       type: Boolean,
       default: false
-    }
+    },
+    likedBy: [
+      {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'user'
+      }
+    ]
   },
   { timestamps: true },
   {

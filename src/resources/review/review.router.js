@@ -12,6 +12,8 @@ router
 router.route('/:id/status').put(controllers.editReviewStatus)
 router.route('/:id').put(controllers.editReview)
 
+router.route('/:id/like').post(controllers.likeReview)
+
 router.route('/').get(controllers.getReviews)
 
 router.route('/search').post(controllers.searchForReviews)
