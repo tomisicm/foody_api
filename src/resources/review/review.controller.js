@@ -330,6 +330,7 @@ export const likeReview = async (req, res) => {
 }
 
 // when user not logged, no req.user._id
+// can be generalized with collection reference
 export const likesReview = async (req, res) => {
   const user = req.user._id ? req.user._id : null
 
