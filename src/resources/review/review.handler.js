@@ -6,7 +6,7 @@ import { Review } from './review.model'
 import { CateringEstablishment } from './../CateringEstablishment/catering.model'
 
 const recalculate = function() {
-  reviewHandler.on('dick', async function(data) {
+  reviewHandler.on('updateCateringRating', async function(data) {
     /*
     const ddoc = await mongoose
       .model('cateringestablishment')

@@ -204,13 +204,7 @@ export const createReview = async (req, res) => {
   const { error } = validateCreateObject(req.body)
   if (error) return res.status(400).send(error)
 
-  // TODO: update route is missing this logic
-  const avgRating = (
-    [req.body.generalRating, req.body.foodRating, req.body.staffRating].reduce(
-      (p, c) => p + c,
-      0
-    ) / 3
-  ).toFixed(1)
+  const avgRating = calculateAvgRating(req.body)
 
   const createdBy = req.user._id
   try {
@@ -222,7 +216,7 @@ export const createReview = async (req, res) => {
 
     await doc.populate('createdBy').execPopulate()
 
-    console.log(reviewHandler.emit('dick', doc))
+    reviewHandler.emit('updateCateringRating', doc)
 
     res.status(201).json({ data: doc })
   } catch (e) {
@@ -287,16 +281,20 @@ export const editReview = async (req, res) => {
         .status(400)
         .send({ message: 'Review is locked and thus cannot be edited!' })
 
+    const avgRating = calculateAvgRating(req.body)
+
     const updatedDoc = await Review.findOneAndUpdate(
       {
         createdBy: req.user._id,
         _id: req.params.id
       },
-      req.body,
+      { ...req.body, avgRating },
       { new: true }
     )
       .lean()
       .exec()
+
+    reviewHandler.emit('updateCateringRating', updatedDoc)
 
     res.status(200).json({ data: updatedDoc })
   } catch (e) {
@@ -352,6 +350,15 @@ export const likesReview = async (req, res) => {
     console.error(e)
     res.status(400).end()
   }
+}
+
+function calculateAvgRating(body) {
+  return (
+    [body.generalRating, body.foodRating, body.staffRating].reduce(
+      (p, c) => p + c,
+      0
+    ) / (3).toFixed(1)
+  )
 }
 
 export default {
