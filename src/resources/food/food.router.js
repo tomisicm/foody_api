@@ -6,7 +6,7 @@ const router = Router()
 
 router.route('/').post(protect, controllers.createOne)
 
-router.route('/catering/:id').get(controllers.getManyByCateringId)
+router.route('/catering/:cateringId').get(controllers.getManyByCateringId)
 
 router.route('/:id').put(controllers.updateOne)
 

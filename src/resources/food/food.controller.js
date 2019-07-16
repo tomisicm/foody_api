@@ -11,7 +11,7 @@ export const getFoodsByCateringId = async (req, res) => {
   }
   try {
     const docs = await Food.paginate(
-      { item: req.params.itemId, replyTo: null },
+      { catering: req.params.cateringId },
       options
     )
     res.status(200).json({ data: docs })
