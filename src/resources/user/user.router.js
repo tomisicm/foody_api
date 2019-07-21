@@ -6,7 +6,7 @@ import {
   getUsersByNameOrEmail
 } from './user.controller'
 
-import { protect } from '../../utils/auth'
+import { authorization } from '../../utils/auth'
 
 import multer from 'multer'
 
@@ -35,10 +35,10 @@ const upload = multer({
 
 const router = Router()
 
-router.get('/', protect, me)
-router.put('/', protect, updateMe)
+router.get('/', authorization, me)
+router.put('/', authorization, updateMe)
 
-router.post('/avatar', protect, upload.single('file'), updateAvatar)
+router.post('/avatar', authorization, upload.single('file'), updateAvatar)
 
 router.get('/all', getUsersByNameOrEmail)
 

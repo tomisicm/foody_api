@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import jwt from 'jsonwebtoken'
 
-import { newToken, verifyToken, signup, signin, protect } from '../auth'
+import { newToken, verifyToken, signup, signin, authorization } from '../auth'
 import config from '../../config'
 import { User } from '../../resources/user/user.model'
 
@@ -164,7 +164,7 @@ describe('Authentication:', () => {
     })
   })
 
-  describe('protect', () => {
+  describe('authorization', () => {
     test('Header must contain Bearer token', async () => {
       expect.assertions(2)
 
@@ -179,7 +179,7 @@ describe('Authentication:', () => {
         }
       }
 
-      await protect(req, res)
+      await authorization(req, res)
     })
 
     test('Token must have correct Bearer prefix', async () => {
@@ -196,7 +196,7 @@ describe('Authentication:', () => {
         }
       }
 
-      await protect(req, res)
+      await authorization(req, res)
     })
 
     test('For the given token, user must be exist.', async () => {
@@ -213,7 +213,7 @@ describe('Authentication:', () => {
         }
       }
 
-      await protect(req, res)
+      await authorization(req, res)
     })
 
     test('finds user form token and passes on', async () => {
@@ -226,7 +226,7 @@ describe('Authentication:', () => {
       const req = { headers: { authorization: token } }
 
       const next = () => {}
-      await protect(req, {}, next)
+      await authorization(req, {}, next)
       expect(req.user._id.toString()).toBe(user._id.toString())
       expect(req.user).not.toHaveProperty('password')
     })

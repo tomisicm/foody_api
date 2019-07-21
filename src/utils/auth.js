@@ -76,7 +76,7 @@ export const signin = async (req, res) => {
 }
 
 // mount on /api/
-export const authorize = async (req, res, next) => {
+export const authentication = async (req, res, next) => {
   const bearer = req.headers.authorization
 
   if (bearer && bearer.startsWith('Bearer ')) {
@@ -104,7 +104,7 @@ export const authorize = async (req, res, next) => {
   next()
 }
 
-export const protect = async (req, res, next) => {
+export const authorization = async (req, res, next) => {
   if (!req.user) {
     return res.status(401).end()
   }

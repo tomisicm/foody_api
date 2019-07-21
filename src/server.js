@@ -7,7 +7,7 @@ import config from './config'
 import cors from 'cors'
 import Joi from '@hapi/joi'
 
-import { signup, signin, authorize } from './utils/auth'
+import { signup, signin, authentication } from './utils/auth'
 
 import { connect } from './utils/db'
 
@@ -35,7 +35,7 @@ app.use('/public', express.static('public'))
 app.post('/signup', signup)
 app.post('/signin', signin)
 
-app.use('/api', authorize)
+app.use('/api', authentication)
 
 app.use('/api/user', userRouter)
 

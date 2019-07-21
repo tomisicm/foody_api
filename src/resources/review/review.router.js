@@ -1,13 +1,13 @@
 import { Router } from 'express'
 import controllers from './review.controller'
-import { protect } from '../../utils/auth'
+import { authorization } from '../../utils/auth'
 import { findDocumentByModelAndId } from '../../middleware/item.middleware'
 
 const router = Router()
 
 router
   .route('/')
-  .post(protect, findDocumentByModelAndId, controllers.createReview)
+  .post(authorization, findDocumentByModelAndId, controllers.createReview)
 
 router.route('/:id/status').put(controllers.editReviewStatus)
 router.route('/:id').put(controllers.editReview)
