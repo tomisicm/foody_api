@@ -113,6 +113,7 @@ export const searchForReviews = async (req, res) => {
   console.log(match)
   try {
     let doc = await Review.aggregate([
+      { $project: { likedBy: 0 } },
       {
         $lookup: {
           from: 'cateringestablishments',
@@ -159,6 +160,8 @@ export const searchForReviews = async (req, res) => {
 }
 
 export const getReviewsByItemId = async (req, res) => {
+  const user = req.user._id ? req.user._id : null
+
   const { perPage, page } = req.query
 
   const options = {
@@ -168,11 +171,14 @@ export const getReviewsByItemId = async (req, res) => {
     },
     sort: { avgRating: -1 },
     page: parseInt(page, 10) || 1,
-    limit: parseInt(perPage, 10) || 10
+    limit: parseInt(perPage, 10) || 10,
+    lean: true
   }
 
   try {
-    const doc = await Review.paginate({ item: req.params.itemId }, options)
+    let doc = await Review.paginate({ item: req.params.itemId }, options)
+
+    doc.docs.forEach(record => determineLikes(user, record))
 
     res.status(200).json({ data: doc })
   } catch (e) {
@@ -182,16 +188,23 @@ export const getReviewsByItemId = async (req, res) => {
 }
 
 export const getReviewById = async (req, res) => {
+  const user = req.user._id ? req.user._id : null
+
   try {
-    const doc = await Review.findById(req.params.id).populate([
-      {
-        path: 'createdBy',
-        select: '_id name profile'
-      },
-      {
-        path: 'item'
-      }
-    ])
+    const doc = await Review.findById(req.params.id)
+      .populate([
+        {
+          path: 'createdBy',
+          select: '_id name profile'
+        },
+        {
+          path: 'item'
+        }
+      ])
+      .lean()
+
+    determineLikes(user, doc)
+
     res.status(200).json({ data: doc })
   } catch (e) {
     console.error(e)
@@ -359,6 +372,21 @@ function calculateAvgRating(body) {
       0
     ) / (3).toFixed(1)
   )
+}
+
+// Accepts plane JS docs
+function determineLikes(user, doc) {
+  const data = {}
+
+  const { likedBy } = doc
+
+  data.likes = likedBy.length
+
+  if (likedBy.indexOf(user) > -1) {
+    data.liked = true
+  }
+
+  doc.likedBy = Object.assign({}, data)
 }
 
 export default {
