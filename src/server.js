@@ -12,7 +12,7 @@ import { signup, signin, authorize } from './utils/auth'
 import { connect } from './utils/db'
 
 import userRouter from './resources/user/user.router'
-import CateringEstablishmentRouter from './resources/CateringEstablishment/Catering.router'
+import CateringEstablishmentRouter from './resources/Catering/Catering.router'
 import CuisineRouter from './resources/food/cuisine.router'
 import FoodRouter from './resources/food/food.router'
 import ReviewRouter from './resources/review/review.router'
