@@ -2,12 +2,7 @@ import _ from 'lodash'
 // import { findDocumentByModelAndId } from '../../middleware/item.middleware'
 import { findDocumentByCollectionAndId } from '../../middleware/item.middleware'
 
-import {
-  Review,
-  validateEditStatus,
-  validateCreateObject,
-  validateEditObject
-} from './review.model'
+import { Review } from './review.model'
 
 import { reviewHandler } from './reveiw.emitter'
 import { recalculate } from './review.handler'
@@ -218,8 +213,7 @@ export const getReviewById = async (req, res) => {
 export const createReview = async (req, res) => {
   const createdBy = req.user._id
 
-  const { error, value } = validateCreateObject(req.body)
-  if (error) return res.status(400).send(error)
+  const value = req.parsed
 
   try {
     findDocumentByCollectionAndId(value.item, value.itemType)
@@ -246,8 +240,7 @@ export const createReview = async (req, res) => {
 // review approval is one way operation. this cannot be undone
 // TODO: research pre save hook, it might be better to do approval logic inside hook
 export const editReviewStatus = async (req, res) => {
-  const { error } = validateEditStatus(req.body)
-  if (error) return res.status(400).send(error)
+  const value = req.parsed
 
   // only admins can change status.
   // TODO: might be better in separate middleware
@@ -260,12 +253,13 @@ export const editReviewStatus = async (req, res) => {
     const doc = await Review.findByIdAndUpdate(
       req.params.id,
       {
-        $set: { locked: req.body.locked }
+        $set: { locked: value.locked }
       },
       { new: true }
     )
 
-    if (!doc.approved && req.body.approved === true) {
+    // doc approved is reference
+    if (!doc.approved && value.approved === true) {
       doc.approved = req.user._id
       await doc.save()
     }
@@ -279,11 +273,7 @@ export const editReviewStatus = async (req, res) => {
 
 // review content can only be updated by its creator
 export const editReview = async (req, res) => {
-  const { error } = validateEditObject(req.body)
-  if (error) return res.status(400).send(error)
-
-  // TODO: replace req.body with value
-  // const { value } = validateEditObject(req.body)
+  const value = req.parsed
 
   try {
     let doc = await Review.findById({
@@ -299,6 +289,8 @@ export const editReview = async (req, res) => {
         .status(400)
         .send({ message: 'Review is locked and thus cannot be edited!' })
 
+    // the logic here could be improved, but for now i'll
+    // assume that front is providing all grades
     const avgRating = calculateAvgRating(req.body)
 
     const updatedDoc = await Review.findOneAndUpdate(
@@ -306,7 +298,7 @@ export const editReview = async (req, res) => {
         createdBy: req.user._id,
         _id: req.params.id
       },
-      { ...req.body, avgRating },
+      { ...value, avgRating },
       { new: true }
     )
       .lean()

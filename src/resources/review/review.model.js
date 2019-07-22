@@ -1,10 +1,6 @@
 import mongoose from 'mongoose'
 import mongoosePaginate from 'mongoose-paginate'
 
-import { createObjectSchema, editObjectSchema } from './review.schema'
-
-import Joi from '@hapi/joi'
-
 const reivewSchema = new mongoose.Schema(
   {
     title: {
@@ -103,27 +99,8 @@ const reivewSchema = new mongoose.Schema(
   }
 )
 
-function validateCreateObject(cuisine) {
-  return Joi.validate(cuisine, createObjectSchema)
-}
-
-function validateEditObject(cuisine) {
-  return Joi.validate(cuisine, editObjectSchema, { stripUnknown: true })
-}
-
-function validateEditStatus(cuisine) {
-  const schema = Joi.object().keys({
-    locked: Joi.boolean(),
-    approved: Joi.boolean()
-  })
-  return Joi.validate(cuisine, schema)
-}
-
 reivewSchema.plugin(mongoosePaginate)
 
 const Review = mongoose.model('review', reivewSchema)
 
-exports.validateCreateObject = validateCreateObject
-exports.validateEditObject = validateEditObject
-exports.validateEditStatus = validateEditStatus
 exports.Review = Review

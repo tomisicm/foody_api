@@ -2,12 +2,25 @@ import { Router } from 'express'
 import controllers from './review.controller'
 import { authorization } from '../../utils/auth'
 
+import {
+  validateCreateObject,
+  validateEditObject,
+  validateEditStatus
+} from '../review/review.middleware'
+
 const router = Router()
 
-router.route('/').post(authorization, controllers.createReview)
+router
+  .route('/')
+  .post(authorization, validateCreateObject, controllers.createReview)
 
-router.route('/:id/status').put(authorization, controllers.editReviewStatus)
-router.route('/:id').put(authorization, controllers.editReview)
+router
+  .route('/:id')
+  .put(authorization, validateEditObject, controllers.editReview)
+
+router
+  .route('/:id/status')
+  .put(authorization, validateEditStatus, controllers.editReviewStatus)
 
 router.route('/:id/like').post(authorization, controllers.likeReview)
 

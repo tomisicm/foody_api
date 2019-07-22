@@ -41,14 +41,23 @@ export const editObjectSchema = Joi.object()
     staffRating
   })
 
-export const createObjectSchema = Joi.object().keys({
-  title: title.required(),
-  item: item,
-  itemType: itemType,
-  generalImpression: generalImpression.required(),
-  generalRating: generalRating.required(),
-  foodSection: foodSection.required(),
-  foodRating: foodRating.required(),
-  staffSection: staffSection.required(),
-  staffRating: staffRating.required()
-})
+export const createObjectSchema = Joi.object()
+  .options({ stripUnknown: true })
+  .keys({
+    title: title.required(),
+    item: item,
+    itemType: itemType,
+    generalImpression: generalImpression.required(),
+    generalRating: generalRating.required(),
+    foodSection: foodSection.required(),
+    foodRating: foodRating.required(),
+    staffSection: staffSection.required(),
+    staffRating: staffRating.required()
+  })
+
+export const editStatusObjectSchema = Joi.object()
+  .options({ stripUnknown: true })
+  .keys({
+    locked: Joi.boolean(),
+    approved: Joi.boolean()
+  })
