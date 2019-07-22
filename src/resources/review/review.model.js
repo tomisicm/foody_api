@@ -21,7 +21,7 @@ const reivewSchema = new mongoose.Schema(
     itemType: {
       type: String,
       required: true,
-      enum: ['review', 'cateringestablishment']
+      enum: ['cateringestablishment']
     },
     generalImpression: {
       type: String,

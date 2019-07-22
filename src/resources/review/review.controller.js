@@ -1,4 +1,6 @@
 import _ from 'lodash'
+// import { findDocumentByModelAndId } from '../../middleware/item.middleware'
+import { findDocumentByCollectionAndId } from '../../middleware/item.middleware'
 
 import {
   Review,
@@ -214,15 +216,18 @@ export const getReviewById = async (req, res) => {
 
 // TODO: middleware where i will check if item is valid, exists
 export const createReview = async (req, res) => {
-  const { error } = validateCreateObject(req.body)
+  const createdBy = req.user._id
+
+  const { error, value } = validateCreateObject(req.body)
   if (error) return res.status(400).send(error)
 
-  const avgRating = calculateAvgRating(req.body)
-
-  const createdBy = req.user._id
   try {
+    findDocumentByCollectionAndId(value.item, value.itemType)
+
+    const avgRating = calculateAvgRating(value)
+
     const doc = await Review.create({
-      ...req.body,
+      ...value,
       createdBy,
       avgRating
     })
