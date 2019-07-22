@@ -1,10 +1,6 @@
 import mongoose from 'mongoose'
 import mongoosePaginate from 'mongoose-paginate'
 
-import { createObjectSchema, editObjectSchema } from './comment.schema'
-
-import Joi from '@hapi/joi'
-
 const commentSchema = new mongoose.Schema(
   {
     body: {
@@ -72,14 +68,4 @@ commentSchema.post('save', async function() {
 
 const Comment = mongoose.model('comment', commentSchema)
 
-function validateEditObject(comment) {
-  return Joi.validate(comment, editObjectSchema)
-}
-
-function validateCreateObject(comment) {
-  return Joi.validate(comment, createObjectSchema)
-}
-
-exports.validateCreateObject = validateCreateObject
-exports.validateEditObject = validateEditObject
 exports.Comment = Comment

@@ -42,13 +42,12 @@ const getCommentsByItemId = async (req, res) => {
 }
 
 const createComment = async (req, res) => {
-  const { error } = validateCreateObject(req.body)
-  if (error) return res.status(400).send(error)
+  const value = req.parsed
 
   const createdBy = req.user._id
 
   try {
-    const doc = await Comment.create({ ...req.body, createdBy })
+    const doc = await Comment.create({ ...value, createdBy })
 
     await doc.populate({ path: 'createdBy', select: '_id name' }).execPopulate()
 
@@ -60,8 +59,7 @@ const createComment = async (req, res) => {
 }
 
 const editComment = async (req, res) => {
-  const { error } = validateEditObject(req.body)
-  if (error) return res.status(400).send(error)
+  const value = req.parsed
 
   try {
     const updatedDoc = await Comment.findOneAndUpdate(
@@ -69,7 +67,7 @@ const editComment = async (req, res) => {
         createdBy: req.user._id,
         _id: req.params.id
       },
-      req.body,
+      value,
       { new: true }
     )
       .lean()
