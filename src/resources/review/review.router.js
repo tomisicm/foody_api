@@ -9,11 +9,10 @@ router
   .route('/')
   .post(authorization, findDocumentByModelAndId, controllers.createReview)
 
-router.route('/:id/status').put(controllers.editReviewStatus)
-router.route('/:id').put(controllers.editReview)
+router.route('/:id/status').put(authorization, controllers.editReviewStatus)
+router.route('/:id').put(authorization, controllers.editReview)
 
-router.route('/:id/like').post(controllers.likeReview)
-router.route('/:id/like').get(controllers.likesReview)
+router.route('/:id/like').post(authorization, controllers.likeReview)
 
 router.route('/').get(controllers.getReviews)
 
