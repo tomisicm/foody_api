@@ -313,30 +313,6 @@ export const editReview = async (req, res) => {
   }
 }
 
-// TODO: remove likedBy property from review object
-export const likeReview = async (req, res) => {
-  const userLiked = req.user._id
-
-  try {
-    const doc = await Review.findById(req.params.id)
-
-    if (!doc.likedBy.includes(userLiked)) {
-      doc.likedBy.push(userLiked)
-    } else {
-      const index = doc.likedBy.indexOf(userLiked)
-      if (index > -1) {
-        doc.likedBy.splice(index, 1)
-      }
-    }
-    await doc.save()
-
-    res.status(200).json({ data: doc })
-  } catch (e) {
-    console.error(e)
-    res.status(400).end()
-  }
-}
-
 // when user not logged, no req.user._id
 // can be generalized with collection reference
 export const likesReview = async (req, res) => {
@@ -394,6 +370,5 @@ export default {
   createReview,
   editReview,
   editReviewStatus,
-  likeReview,
   likesReview
 }
