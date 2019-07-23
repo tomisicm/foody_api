@@ -1,10 +1,6 @@
 import mongoose from 'mongoose'
 import mongoosePaginate from 'mongoose-paginate'
 
-import { createObjectSchema, editObjectSchema } from '../food/food.schema'
-
-import Joi from '@hapi/joi'
-
 const foodSchema = new mongoose.Schema(
   {
     name: {
@@ -61,17 +57,7 @@ const foodSchema = new mongoose.Schema(
   }
 )
 
-function validateCreateObject(food) {
-  return Joi.validate(food, createObjectSchema, { stripUnknown: true })
-}
-
-function validateEditObject(food) {
-  return Joi.validate(food, editObjectSchema, { stripUnknown: true })
-}
-
 foodSchema.plugin(mongoosePaginate)
 
 exports.foodSchema = foodSchema
-exports.validateCreateObject = validateCreateObject
-exports.validateEditObject = validateEditObject
 exports.Food = mongoose.model('food', foodSchema)
