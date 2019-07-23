@@ -1,8 +1,6 @@
 import mongoose from 'mongoose'
 import mongoosePaginate from 'mongoose-paginate'
-import Joi from '@hapi/joi'
 
-import { createObjectSchema, editObjectSchema } from './catering.schema'
 import { cuisineSchema } from '../food/cuisine.model'
 
 const cateringEstablishmentSchema = new mongoose.Schema(
@@ -75,14 +73,6 @@ cateringEstablishmentSchema.virtual('fullAddress').get(function() {
   )
 })
 
-function validateCreateObject(catering) {
-  return Joi.validate(catering, createObjectSchema)
-}
-
-function validateEditObject(catering) {
-  return Joi.validate(catering, editObjectSchema, { stripUnknown: true })
-}
-
 cateringEstablishmentSchema.plugin(mongoosePaginate)
 
 const CateringEstablishment = mongoose.model(
@@ -90,6 +80,4 @@ const CateringEstablishment = mongoose.model(
   cateringEstablishmentSchema
 )
 
-exports.validateCreateObject = validateCreateObject
-exports.validateEditObject = validateEditObject
 exports.CateringEstablishment = CateringEstablishment
