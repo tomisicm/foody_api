@@ -34,7 +34,7 @@ app.use(morgan('dev'))
 
 app.use('/public', express.static('public'))
 
-app.use('authRouter', authRouter)
+app.use('/', authRouter)
 
 app.use('/api', authentication)
 
