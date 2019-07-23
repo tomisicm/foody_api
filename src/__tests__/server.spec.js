@@ -1,4 +1,4 @@
-/* import request from 'supertest'
+import request from 'supertest'
 import { app } from '../server'
 import { User } from '../resources/user/user.model'
 import { newToken } from '../utils/auth'
@@ -14,4 +14,3 @@ describe('API Authentication:', () => {
     token = newToken(user)
   })
 })
- */
