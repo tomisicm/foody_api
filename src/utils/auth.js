@@ -1,9 +1,6 @@
 import config from '../config'
-import {
-  User,
-  validateSignin,
-  validateSignup
-} from '../resources/user/user.model'
+import { User } from '../resources/user/user.model'
+
 import jwt from 'jsonwebtoken'
 
 export const newToken = user => {
@@ -25,11 +22,11 @@ export const verifyToken = token =>
   })
 
 export const signup = async (req, res) => {
-  const { error } = validateSignup(req.body)
+  /* const { error } = validateSignup(req.body)
 
   if (error) {
     return res.status(400).send(error)
-  }
+  } */
 
   try {
     const user = await User.create(req.body)
@@ -41,12 +38,13 @@ export const signup = async (req, res) => {
 }
 
 export const signin = async (req, res) => {
-  const { error } = validateSignin(req.body)
   let user
+  /* const { error } = validateSignin(req.body)
+  
 
   if (error) {
     return res.status(400).send(error.details[0])
-  }
+  } */
 
   try {
     user = await User.findOne({ email: req.body.email })

@@ -7,11 +7,13 @@ import config from './config'
 import cors from 'cors'
 import Joi from '@hapi/joi'
 
-import { signup, signin, authentication } from './utils/auth'
+import { authentication } from './utils/auth'
 
 import { connect } from './utils/db'
 
+import authRouter from '../src/utils/auth.router'
 import userRouter from './resources/user/user.router'
+
 import CateringEstablishmentRouter from './resources/Catering/Catering.router'
 import CuisineRouter from './resources/food/cuisine.router'
 import FoodRouter from './resources/food/food.router'
@@ -32,8 +34,7 @@ app.use(morgan('dev'))
 
 app.use('/public', express.static('public'))
 
-app.post('/signup', signup)
-app.post('/signin', signin)
+app.use('authRouter', authRouter)
 
 app.use('/api', authentication)
 

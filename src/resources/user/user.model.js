@@ -2,7 +2,6 @@ import mongoose from 'mongoose'
 import mongoosePaginate from 'mongoose-paginate'
 import uniqueValidator from 'mongoose-unique-validator'
 import bcrypt from 'bcrypt'
-import Joi from '@hapi/joi'
 
 const userSchema = new mongoose.Schema(
   {
@@ -105,45 +104,4 @@ userSchema.plugin(uniqueValidator)
 
 userSchema.plugin(mongoosePaginate)
 
-function validateSignup(user) {
-  const schema = Joi.object().keys({
-    email: Joi.string()
-      .trim()
-      .email({ minDomainAtoms: 2 })
-      .max(50)
-      .required()
-      .label('email'),
-    password: Joi.string()
-      .trim()
-      .min(8)
-      .required()
-      .label('password'),
-    passwordConfirm: Joi.any()
-      .required()
-      .valid(Joi.ref('password'))
-      .label('passwordConfirm')
-  })
-  return Joi.validate(user, schema, { abortEarly: true })
-}
-
-// TODO: standardinze according to the object keys (response is diff)
-function validateSignin(user) {
-  const schema = {
-    email: Joi.string()
-      .trim()
-      .email({ minDomainAtoms: 2 })
-      .max(50)
-      .required()
-      .label('email'),
-    password: Joi.string()
-      .trim()
-      .min(8)
-      .required()
-      .label('password')
-  }
-  return Joi.validate(user, schema)
-}
-
-exports.validateSignup = validateSignup
-exports.validateSignin = validateSignin
 exports.User = mongoose.model('user', userSchema)
