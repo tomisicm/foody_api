@@ -1,10 +1,6 @@
 import _ from 'lodash'
 
-import {
-  CateringEstablishment,
-  validateCreateObject,
-  validateEditObject
-} from './catering.model'
+import { CateringEstablishment } from './catering.model'
 
 export const getOneCateringEstablishment = async (req, res) => {
   try {
@@ -106,9 +102,7 @@ export const getManyCateringEstablishment = async (req, res) => {
 }
 
 export const createCateringEstablishment = async (req, res) => {
-  const { error, value } = validateCreateObject(req.body)
-  if (error) return res.status(400).send(error)
-
+  const value = req.parsed
   try {
     const doc = await CateringEstablishment.create({
       ...value,
@@ -124,11 +118,7 @@ export const createCateringEstablishment = async (req, res) => {
 
 export const updateCateringEstablishment = async (req, res) => {
   // const updatedBy = req.user._id
-
-  const { error, value } = validateEditObject(req.body)
-  if (error) return res.status(400).send(error)
-
-  // const { value } = validateEditObject(req.body)
+  const value = req.parsed
 
   try {
     const doc = await CateringEstablishment.findByIdAndUpdate(
