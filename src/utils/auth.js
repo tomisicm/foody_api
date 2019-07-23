@@ -21,15 +21,12 @@ export const verifyToken = token =>
     })
   })
 
+// there is uniqueValidator plugin for User Schema
 export const signup = async (req, res) => {
-  /* const { error } = validateSignup(req.body)
-
-  if (error) {
-    return res.status(400).send(error)
-  } */
+  const value = req.parsed
 
   try {
-    const user = await User.create(req.body)
+    const user = await User.create(value)
     const token = newToken(user)
     return res.status(201).send({ token })
   } catch (e) {
@@ -39,25 +36,25 @@ export const signup = async (req, res) => {
 
 export const signin = async (req, res) => {
   let user
-  /* const { error } = validateSignin(req.body)
-  
-
-  if (error) {
-    return res.status(400).send(error.details[0])
-  } */
+  const value = req.parsed
 
   try {
-    user = await User.findOne({ email: req.body.email })
+    user = await User.findOne({ email: value.email })
       .select('name email password user admin')
       .exec()
 
     if (!user) {
-      return res
-        .status(401)
-        .send({ message: 'Invalid email and passoword combination' })
+      return res.status(401).send({
+        // METHOD FOR CREATING THIS ERROR
+        errors: {
+          email: {
+            message: 'Invalid email and passoword combination'
+          }
+        }
+      })
     }
 
-    const match = await user.comparePassword(req.body.password)
+    const match = await user.comparePassword(value.password)
 
     if (!match) {
       return res
