@@ -3,7 +3,7 @@ import { reviewHandler } from './reveiw.emitter'
 // import mongoose from 'mongoose'
 
 import { Review } from './review.model'
-import { CateringEstablishment } from './../Catering/catering.model'
+import { CateringEstablishment } from './../catering/catering.model'
 
 const recalculate = function() {
   reviewHandler.on('updateCateringRating', async function(data) {

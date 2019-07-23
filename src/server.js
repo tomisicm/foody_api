@@ -14,7 +14,7 @@ import { connect } from './utils/db'
 import authRouter from '../src/utils/auth.router'
 import userRouter from './resources/user/user.router'
 
-import CateringEstablishmentRouter from './resources/Catering/Catering.router'
+import CateringRouter from './resources/catering/catering.router'
 import CuisineRouter from './resources/food/cuisine.router'
 import FoodRouter from './resources/food/food.router'
 import ReviewRouter from './resources/review/review.router'
@@ -42,7 +42,7 @@ app.use('/api/user', userRouter)
 
 app.use('/api/cuisine', CuisineRouter)
 app.use('/api/food', FoodRouter)
-app.use('/api/catering', CateringEstablishmentRouter)
+app.use('/api/catering', CateringRouter)
 app.use('/api/review', ReviewRouter)
 app.use('/api/comment', CommentRouter)
 

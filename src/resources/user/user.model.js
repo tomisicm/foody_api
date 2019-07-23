@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
-import mongoosePaginate from 'mongoose-paginate'
-import uniqueValidator from 'mongoose-unique-validator'
+// import mongoosePaginate from 'mongoose-paginate'
+// import uniqueValidator from 'mongoose-unique-validator'
 import bcrypt from 'bcrypt'
 
 const userSchema = new mongoose.Schema(
@@ -100,8 +100,8 @@ userSchema.statics.findByEmail = function(email) {
   return this.find({ email: new RegExp(email, 'i') })
 }
 
-userSchema.plugin(uniqueValidator)
+// userSchema.plugin(uniqueValidator)
 
-userSchema.plugin(mongoosePaginate)
+// userSchema.plugin(mongoosePaginate)
 
 exports.User = mongoose.model('user', userSchema)

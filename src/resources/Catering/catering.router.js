@@ -2,10 +2,7 @@ import { Router } from 'express'
 import controllers from './catering.controller'
 import { authorization } from '../../utils/auth'
 
-import {
-  validateCreateObject,
-  validateEditObject
-} from '../catering/catering.middleware'
+import { validateCreateObject, validateEditObject } from './catering.middleware'
 
 const router = Router()
 
