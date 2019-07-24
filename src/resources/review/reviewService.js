@@ -74,6 +74,10 @@ class ReviewService extends DocumentService {
     try {
       const doc = await Review.findById(reviewId)
 
+      if (!doc) {
+        throw new Error('review does not exist')
+      }
+
       if (!doc.likedBy.includes(user)) {
         doc.likedBy.push(user)
       } else {

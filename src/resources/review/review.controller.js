@@ -201,7 +201,6 @@ export const getReviewById = async (req, res) => {
   }
 }
 
-// TODO: middleware where i will check if item is valid, exists
 export const createReview = async (req, res) => {
   const createdBy = req.user._id
 
