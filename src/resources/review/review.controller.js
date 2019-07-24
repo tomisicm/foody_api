@@ -220,33 +220,16 @@ export const createReview = async (req, res) => {
 // TODO: research pre save hook, it might be better to do approval logic inside hook
 export const editReviewStatus = async (req, res) => {
   const value = req.parsed
-
-  // only admins can change status.
-  // TODO: might be better in separate middleware
-  if (!req.user.admin)
-    return res
-      .status(400)
-      .send({ error: { message: 'You do not have admin permissions' } })
+  const reviewId = req.params.id
+  const user = req.user
 
   try {
-    const doc = await Review.findByIdAndUpdate(
-      req.params.id,
-      {
-        $set: { locked: value.locked }
-      },
-      { new: true }
-    )
-
-    // doc approved is reference
-    if (!doc.approved && value.approved === true) {
-      doc.approved = req.user._id
-      await doc.save()
-    }
+    const doc = await ReviewService.editReviewStatus(reviewId, value, user)
 
     res.status(200).json({ data: doc })
   } catch (e) {
     console.error(e)
-    res.status(400).end()
+    res.status(400).send(e)
   }
 }
 
