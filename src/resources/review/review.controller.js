@@ -1,11 +1,6 @@
 import _ from 'lodash'
 import { Review } from './review.model'
 import ReviewService from './reviewService'
-import { reviewHandler } from './reveiw.emitter'
-import { recalculate } from './review.handler'
-
-// imported recalculate which registereed event
-recalculate()
 
 export const getReviews = async (req, res) => {
   const { perPage, page, sort = '-updatedAt' } = req.query
@@ -272,28 +267,16 @@ export const editReview = async (req, res) => {
   }
 }
 
-// when user not logged, no req.user._id
-// can be generalized with collection reference
-export const likesReview = async (req, res) => {
-  const user = req.user._id ? req.user._id : null
+export const likeReview = async (req, res) => {
+  const user = req.user._id
+  const reviewId = req.params.id
 
   try {
-    const doc = await Review.findById(req.params.id)
-
-    let data = {
-      reviewId: req.params.id
-    }
-
-    if (user) {
-      data.liked = doc.likedBy.includes(user)
-    }
-
-    data.likes = doc.likedBy.length
-
-    res.status(200).json({ data: data })
+    const doc = await ReviewService.likeReview(reviewId, user)
+    res.status(200).json({ data: doc })
   } catch (e) {
     console.error(e)
-    res.status(400).end()
+    res.status(400).send(e)
   }
 }
 
@@ -320,5 +303,5 @@ export default {
   createReview,
   editReview,
   editReviewStatus,
-  likesReview
+  likeReview
 }

@@ -68,6 +68,29 @@ class ReviewService extends DocumentService {
       throw e
     }
   }
+
+  // can be extracted as separate service
+  async likeReview(reviewId, user) {
+    try {
+      const doc = await Review.findById(reviewId)
+
+      if (!doc.likedBy.includes(user)) {
+        doc.likedBy.push(user)
+      } else {
+        const index = doc.likedBy.indexOf(user)
+        if (index > -1) {
+          doc.likedBy.splice(index, 1)
+        }
+      }
+
+      await doc.save()
+
+      return doc
+    } catch (e) {
+      console.error(e)
+      throw e
+    }
+  }
 }
 
 function reviewAvgRating(review) {
