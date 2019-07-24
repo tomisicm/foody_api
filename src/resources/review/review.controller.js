@@ -258,43 +258,17 @@ export const editReviewStatus = async (req, res) => {
 
 // review content can only be updated by its creator
 export const editReview = async (req, res) => {
+  const reviewId = req.params.id
+  const createdBy = req.user._id
   const value = req.parsed
 
   try {
-    let doc = await Review.findById({
-      _id: req.params.id
-    })
+    const doc = await ReviewService.editReview(reviewId, value, createdBy)
 
-    if (!doc) {
-      return res.status(400).send({ message: 'Review not found!' })
-    }
-
-    if (doc.locked)
-      return res
-        .status(400)
-        .send({ message: 'Review is locked and thus cannot be edited!' })
-
-    // the logic here could be improved, but for now i'll
-    // assume that front is providing all grades
-    const avgRating = calculateAvgRating(req.body)
-
-    const updatedDoc = await Review.findOneAndUpdate(
-      {
-        createdBy: req.user._id,
-        _id: req.params.id
-      },
-      { ...value, avgRating },
-      { new: true }
-    )
-      .lean()
-      .exec()
-
-    reviewHandler.emit('updateCateringRating', updatedDoc)
-
-    res.status(200).json({ data: updatedDoc })
+    res.status(201).json({ data: doc })
   } catch (e) {
     console.error(e)
-    res.status(400).end()
+    res.status(400).send(e)
   }
 }
 
@@ -321,16 +295,6 @@ export const likesReview = async (req, res) => {
     console.error(e)
     res.status(400).end()
   }
-}
-
-// to be removed
-function calculateAvgRating(body) {
-  return (
-    [body.generalRating, body.foodRating, body.staffRating].reduce(
-      (p, c) => p + c,
-      0
-    ) / (3).toFixed(1)
-  )
 }
 
 // Accepts plane JS docs

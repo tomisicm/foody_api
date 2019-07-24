@@ -20,7 +20,7 @@ class ReviewService extends DocumentService {
         throw new Error('cateringestablishment does not exist')
       }
 
-      const avgRating = calculateAvgRating(review)
+      const avgRating = reviewAvgRating(review)
 
       const doc = await Review.create({
         ...review,
@@ -39,12 +39,40 @@ class ReviewService extends DocumentService {
     }
   }
 
-  async editReview() {}
+  async editReview(reviewId, review, userId) {
+    try {
+      let doc = await Review.findOne({
+        _id: reviewId,
+        createdBy: userId
+      })
+
+      if (!doc) {
+        throw new Error('review does not exist')
+      }
+
+      if (doc.locked) {
+        throw new Error('Review is locked and thus cannot be edited!')
+      }
+
+      const avgRating = reviewAvgRating(review)
+
+      doc = Object.assign(doc, { ...review, avgRating })
+
+      doc = await doc.save()
+
+      reviewHandler.emit('updateCateringRating', doc)
+
+      return doc
+    } catch (e) {
+      console.error(e)
+      throw e
+    }
+  }
 }
 
-function calculateAvgRating(body) {
+function reviewAvgRating(review) {
   return (
-    [body.generalRating, body.foodRating, body.staffRating].reduce(
+    [review.generalRating, review.foodRating, review.staffRating].reduce(
       (p, c) => p + c,
       0
     ) / (3).toFixed(1)
