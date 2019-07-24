@@ -1,9 +1,6 @@
 import _ from 'lodash'
-// import { findDocumentByModelAndId } from '../../middleware/item.middleware'
-import { findDocumentByCollectionAndId } from '../../middleware/item.middleware'
-
 import { Review } from './review.model'
-
+import ReviewService from './reviewService'
 import { reviewHandler } from './reveiw.emitter'
 import { recalculate } from './review.handler'
 
@@ -216,19 +213,7 @@ export const createReview = async (req, res) => {
   const value = req.parsed
 
   try {
-    findDocumentByCollectionAndId(value.item, value.itemType)
-
-    const avgRating = calculateAvgRating(value)
-
-    const doc = await Review.create({
-      ...value,
-      createdBy,
-      avgRating
-    })
-
-    await doc.populate('createdBy').execPopulate()
-
-    reviewHandler.emit('updateCateringRating', doc)
+    const doc = await ReviewService.createReview(value, createdBy)
 
     res.status(201).json({ data: doc })
   } catch (e) {
@@ -338,6 +323,7 @@ export const likesReview = async (req, res) => {
   }
 }
 
+// to be removed
 function calculateAvgRating(body) {
   return (
     [body.generalRating, body.foodRating, body.staffRating].reduce(
