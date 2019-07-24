@@ -57,9 +57,13 @@ export const signin = async (req, res) => {
     const match = await user.comparePassword(value.password)
 
     if (!match) {
-      return res
-        .status(401)
-        .send({ message: 'Invalid email and passoword combination' })
+      return res.status(401).send({
+        errors: {
+          email: {
+            message: 'Invalid email and passoword combination'
+          }
+        }
+      })
     }
     const token = newToken(user)
 

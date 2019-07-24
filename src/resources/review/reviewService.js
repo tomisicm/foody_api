@@ -88,6 +88,7 @@ class ReviewService extends DocumentService {
         }
       }
 
+      console.log(await doc.determineLikes(user))
       await doc.save()
 
       return doc

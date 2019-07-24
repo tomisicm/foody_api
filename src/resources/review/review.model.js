@@ -99,6 +99,21 @@ const reivewSchema = new mongoose.Schema(
   }
 )
 
+reivewSchema.methods.determineLikes = function(userId) {
+  const data = {}
+
+  const { likedBy } = this
+
+  data.likes = likedBy.length
+
+  if (likedBy.indexOf(userId) > -1) {
+    data.liked = true
+  }
+
+  console.log(data)
+  return data
+}
+
 reivewSchema.plugin(mongoosePaginate)
 
 const Review = mongoose.model('review', reivewSchema)
