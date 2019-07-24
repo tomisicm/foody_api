@@ -1,4 +1,5 @@
-import { Food, validateCreateObject, validateEditObject } from './food.model'
+import { Food } from './food.model'
+import foodService from './foodService'
 
 export const getFoodsByCateringId = async (req, res) => {
   const { perPage, page } = req.query
@@ -23,12 +24,11 @@ export const getFoodsByCateringId = async (req, res) => {
 
 export const createFood = async (req, res) => {
   const createdBy = req.user._id
-
-  const { error, value } = validateCreateObject(req.body)
-  if (error) return res.status(400).send(error)
+  const value = req.parsed
 
   try {
-    const doc = await Food.create({ ...value, createdBy })
+    const doc = await foodService.createFood(value, createdBy)
+
     res.status(201).json({ data: doc })
   } catch (e) {
     console.error(e)
@@ -37,21 +37,14 @@ export const createFood = async (req, res) => {
 }
 
 export const updateFood = async (req, res) => {
-  const { error, value } = validateEditObject(req.body)
-  if (error) return res.status(400).send(error)
+  const foodId = req.params.id
+  const user = req.user._id
+  const value = req.parsed
 
   try {
-    const updatedDoc = await Food.findByIdAndUpdate(req.params.id, value, {
-      new: true
-    })
-      .lean()
-      .exec()
+    const doc = await foodService.editFood(foodId, value, user)
 
-    if (!updatedDoc) {
-      return res.status(400).end()
-    }
-
-    res.status(200).json({ data: updatedDoc })
+    res.status(200).json({ data: doc })
   } catch (e) {
     console.error(e)
     res.status(400).end()
