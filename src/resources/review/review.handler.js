@@ -1,20 +1,12 @@
-import { reviewHandler } from './reveiw.emitter'
-
-// import mongoose from 'mongoose'
+import { reviewNotifier } from './reveiw.emitter'
 
 import { Review } from './review.model'
 import { CateringEstablishment } from './../catering/catering.model'
 
 const recalculate = function() {
-  reviewHandler.on('updateCateringRating', async function(data) {
-    /*
-    const ddoc = await mongoose
-      .model('cateringestablishment')
-      .findById(data.item)
-    */
-
+  reviewNotifier.on('updateCateringRating', async function(data) {
     // ?might be static fucntion
-    let docc = await Review.aggregate([
+    let rating = await Review.aggregate([
       {
         $match: {
           item: data.item
@@ -31,7 +23,7 @@ const recalculate = function() {
       { $project: { _id: 0 } }
     ])
 
-    await CateringEstablishment.findByIdAndUpdate(data.item, docc[0])
+    await CateringEstablishment.findByIdAndUpdate(data.item, rating[0])
   })
 }
 

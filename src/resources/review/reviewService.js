@@ -1,13 +1,15 @@
 import { Review } from './review.model'
 import { DocumentService } from '../documentService'
 
-// rename reviewEmitter
-import { reviewHandler } from './reveiw.emitter'
+import { reviewNotifier } from './reveiw.emitter'
 import { recalculate } from './review.handler'
 
-recalculate()
-
 class ReviewService extends DocumentService {
+  constructor() {
+    super()
+    this.recalculate = recalculate()
+  }
+
   async createReview(review, createdBy) {
     try {
       // check if cateringestablishment exists
@@ -30,7 +32,7 @@ class ReviewService extends DocumentService {
 
       await doc.populate('createdBy').execPopulate()
 
-      reviewHandler.emit('updateCateringRating', doc)
+      reviewNotifier.emit('updateCateringRating', doc)
 
       return doc
     } catch (e) {
@@ -60,7 +62,7 @@ class ReviewService extends DocumentService {
 
       doc = await doc.save()
 
-      reviewHandler.emit('updateCateringRating', doc)
+      reviewNotifier.emit('updateCateringRating', doc)
 
       return doc
     } catch (e) {

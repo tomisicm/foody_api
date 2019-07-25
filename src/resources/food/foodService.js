@@ -60,6 +60,50 @@ class FoodService extends DocumentService {
       throw e
     }
   }
+
+  async deleteFood(foodId, userId) {
+    try {
+      const doc = await Food.findById({
+        _id: foodId
+      })
+
+      if (!doc) {
+        throw new Error('food does not exist')
+      }
+
+      const cateringestablishment = await this.findDocumentByCollectionAndId(
+        doc.catering,
+        'cateringestablishment'
+      )
+
+      if (!cateringestablishment.canMaintainCatering(userId)) {
+        throw new Error('Oi mate you aint got loicence for that!')
+      }
+
+      await doc.remove()
+      return doc
+    } catch (e) {
+      console.error(e)
+      throw e
+    }
+  }
+
+  async getFoodsByCateringId(cateringId, perPage, page) {
+    const options = {
+      sort: 'updatedAt',
+      page: parseInt(page, 10) || 1,
+      limit: parseInt(perPage, 10) || 10,
+      lean: true
+    }
+
+    try {
+      const docs = await Food.paginate({ catering: cateringId }, options)
+      return docs
+    } catch (e) {
+      console.error(e)
+      throw e
+    }
+  }
 }
 
 const foodService = new FoodService()
