@@ -110,7 +110,6 @@ reivewSchema.methods.determineLikes = function(userId) {
     data.liked = true
   }
 
-  console.log(data)
   return data
 }
 
