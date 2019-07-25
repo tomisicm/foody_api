@@ -1,19 +1,14 @@
-import { Food } from './food.model'
 import foodService from './foodService'
 
 export const getFoodsByCateringId = async (req, res) => {
   const { perPage, page } = req.query
+  const cateringId = req.params.cateringId
 
-  const options = {
-    sort: 'updatedAt',
-    page: parseInt(page, 10) || 1,
-    limit: parseInt(perPage, 10) || 10,
-    lean: true
-  }
   try {
-    const docs = await Food.paginate(
-      { catering: req.params.cateringId },
-      options
+    const docs = await foodService.getFoodsByCateringId(
+      cateringId,
+      perPage,
+      page
     )
     res.status(200).json({ data: docs })
   } catch (e) {

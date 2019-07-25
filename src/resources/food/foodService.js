@@ -87,6 +87,23 @@ class FoodService extends DocumentService {
       throw e
     }
   }
+
+  async getFoodsByCateringId(cateringId, perPage, page) {
+    const options = {
+      sort: 'updatedAt',
+      page: parseInt(page, 10) || 1,
+      limit: parseInt(perPage, 10) || 10,
+      lean: true
+    }
+
+    try {
+      const docs = await Food.paginate({ catering: cateringId }, options)
+      return docs
+    } catch (e) {
+      console.error(e)
+      throw e
+    }
+  }
 }
 
 const foodService = new FoodService()
