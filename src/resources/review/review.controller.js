@@ -177,7 +177,7 @@ export const getReviewsByItemId = async (req, res) => {
 }
 
 export const getReviewById = async (req, res) => {
-  const user = req.user._id ? req.user._id : null
+  const user = req.user ? req.user._id : null
 
   try {
     const doc = await Review.findById(req.params.id)
