@@ -149,7 +149,7 @@ export const searchForReviews = async (req, res) => {
 }
 
 export const getReviewsByItemId = async (req, res) => {
-  const user = req.user._id ? req.user._id : null
+  const user = req.user ? req.user._id : null
 
   const { perPage, page } = req.query
 
