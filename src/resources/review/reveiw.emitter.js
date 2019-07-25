@@ -1,13 +1,7 @@
 import EventEmitter from 'events'
 
-/* reviewNotifier */
-class ReviewHandler extends EventEmitter {}
+class ReviewNotifier extends EventEmitter {}
 
-const reviewHandler = new ReviewHandler()
+const reviewNotifier = new ReviewNotifier()
 
-/* function recalcRating() {
-  console.log(reviewHandler)
-} */
-
-exports.reviewHandler = reviewHandler
-// exports.recalcRating = recalcRating
+exports.reviewNotifier = reviewNotifier
