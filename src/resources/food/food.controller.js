@@ -52,19 +52,16 @@ export const updateFood = async (req, res) => {
 }
 
 export const deleteFood = async (req, res) => {
+  const foodId = req.params.id
+  const user = req.user._id
+
   try {
-    const doc = await Food.findById({
-      _id: req.params.id
-    })
-
-    if (!doc) return res.status(400).end()
-
-    await doc.remove()
+    const doc = await foodService.deleteFood(foodId, user)
 
     res.status(200).json({ data: doc })
   } catch (e) {
     console.error(e)
-    res.status(400).end()
+    res.status(400).send(e)
   }
 }
 
