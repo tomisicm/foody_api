@@ -5,9 +5,12 @@ import { DocumentService } from '../documentService'
 import { reviewHandler } from './reveiw.emitter'
 import { recalculate } from './review.handler'
 
-recalculate()
-
 class ReviewService extends DocumentService {
+  constructor() {
+    super()
+    this.recalculate = recalculate()
+  }
+
   async createReview(review, createdBy) {
     try {
       // check if cateringestablishment exists
