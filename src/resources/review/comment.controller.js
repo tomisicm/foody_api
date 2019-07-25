@@ -40,7 +40,6 @@ const getCommentsByItemId = async (req, res) => {
 
 const createComment = async (req, res) => {
   const value = req.parsed
-
   const createdBy = req.user._id
 
   try {

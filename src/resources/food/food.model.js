@@ -35,11 +35,6 @@ const foodSchema = new mongoose.Schema(
       type: mongoose.SchemaTypes.ObjectId,
       ref: 'cateringestablishment',
       required: true
-    },
-    createdBy: {
-      type: mongoose.SchemaTypes.ObjectId,
-      ref: 'user',
-      required: true
     }
   },
   { timestamps: true },

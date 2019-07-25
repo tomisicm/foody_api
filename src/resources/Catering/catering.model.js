@@ -63,6 +63,10 @@ const cateringEstablishmentSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
+cateringEstablishmentSchema.methods.canMaintainCatering = function(userId) {
+  return this.pageMaintainedBy.includes(userId)
+}
+
 cateringEstablishmentSchema.virtual('fullAddress').get(function() {
   return (
     this.address.street +
