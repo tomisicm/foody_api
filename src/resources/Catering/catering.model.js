@@ -77,6 +77,19 @@ cateringEstablishmentSchema.virtual('fullAddress').get(function() {
   )
 })
 
+cateringEstablishmentSchema.pre('remove', async function() {
+  // should remove reviews, comments, food
+  await mongoose.model('review').deleteMany({
+    item: this._id
+  })
+  await mongoose.model('comment').deleteMany({
+    item: this._id
+  })
+  await mongoose.model('food').deleteMany({
+    catering: this._id
+  })
+})
+
 cateringEstablishmentSchema.plugin(mongoosePaginate)
 
 const CateringEstablishment = mongoose.model(
