@@ -216,8 +216,6 @@ export const createReview = async (req, res) => {
   }
 }
 
-// review approval is one way operation. this cannot be undone
-// TODO: research pre save hook, it might be better to do approval logic inside hook
 export const editReviewStatus = async (req, res) => {
   const value = req.parsed
   const reviewId = req.params.id

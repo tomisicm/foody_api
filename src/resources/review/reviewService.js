@@ -58,7 +58,7 @@ class ReviewService extends DocumentService {
 
       const avgRating = reviewAvgRating(review)
 
-      doc = Object.assign(doc, { ...review, avgRating })
+      doc = Object.assign(doc, { ...review, avgRating, approved: null })
 
       doc = await doc.save()
 
