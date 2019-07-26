@@ -127,6 +127,39 @@ class ReviewService extends DocumentService {
       throw e
     }
   }
+
+  async getReviewsByItemId(user, perPage, page, itemId) {
+    const options = {
+      populate: {
+        path: 'createdBy',
+        select: '_id name profile'
+      },
+      sort: { avgRating: -1 },
+      page: parseInt(page, 10) || 1,
+      limit: parseInt(perPage, 10) || 10,
+      lean: true
+    }
+
+    const query = { item: itemId }
+
+    // admins see everything
+    if (!(user || {}).admin) {
+      query.approved = { $ne: null }
+    }
+
+    try {
+      let collection = await Review.paginate(query, options)
+
+      collection.docs.forEach(record =>
+        determineLikes((user || {})._id, record)
+      )
+
+      return collection
+    } catch (e) {
+      console.error(e)
+      throw e
+    }
+  }
 }
 
 function reviewAvgRating(review) {
@@ -136,6 +169,20 @@ function reviewAvgRating(review) {
       0
     ) / (3).toFixed(1)
   )
+}
+
+function determineLikes(user, doc) {
+  const data = {}
+
+  const { likedBy } = doc
+
+  data.likes = likedBy.length
+
+  if (likedBy.indexOf(user) > -1) {
+    data.liked = true
+  }
+
+  doc.likedBy = Object.assign({}, data)
 }
 
 const reviewService = new ReviewService()

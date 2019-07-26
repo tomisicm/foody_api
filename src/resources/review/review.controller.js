@@ -149,30 +149,22 @@ export const searchForReviews = async (req, res) => {
 }
 
 export const getReviewsByItemId = async (req, res) => {
-  const user = req.user ? req.user._id : null
-
+  const user = req.user ? req.user : null
   const { perPage, page } = req.query
-
-  const options = {
-    populate: {
-      path: 'createdBy',
-      select: '_id name profile'
-    },
-    sort: { avgRating: -1 },
-    page: parseInt(page, 10) || 1,
-    limit: parseInt(perPage, 10) || 10,
-    lean: true
-  }
+  const itemId = req.params.itemId
 
   try {
-    let doc = await Review.paginate({ item: req.params.itemId }, options)
-
-    doc.docs.forEach(record => determineLikes(user, record))
+    const doc = await ReviewService.getReviewsByItemId(
+      user,
+      perPage,
+      page,
+      itemId
+    )
 
     res.status(200).json({ data: doc })
   } catch (e) {
     console.error(e)
-    res.status(400).end()
+    res.status(400).send(e)
   }
 }
 
