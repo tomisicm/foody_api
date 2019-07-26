@@ -59,11 +59,8 @@ export const getUsersByNameOrEmail = async (req, res) => {
   if (!_.isEmpty(rq)) {
     query = {
       $or: [
-        // eslint-disable-next-line prettier/prettier
         { name: { $regex: rq.query, $options: 'i' } },
         { email: { $regex: rq.query, $options: 'i' } }
-        // this will be expaned later once i add user profile section
-        // where the plebs will be able to input first or last name
       ]
     }
   }
