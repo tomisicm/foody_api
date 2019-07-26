@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import { Review } from './review.model'
 import ReviewService from './reviewService'
 
@@ -31,115 +30,18 @@ export const getReviews = async (req, res) => {
 }
 
 export const searchForReviews = async (req, res) => {
-  let { page = 1, perPage = 10 } = req.query
+  const user = req.user || null
+  let query = req.query
   const { review, catering } = req.body
 
-  // deal with this later
-  page = parseInt(page, 10)
-  perPage = parseInt(perPage, 10)
-
-  let match = {}
-
-  if (!_.isEmpty(review.title)) {
-    match = {
-      ...match,
-      title: { $regex: review.title, $options: 'i' }
-    }
-  }
-  if (!_.isEmpty(review.author)) {
-    match = {
-      ...match,
-      'author.name': {
-        $regex: review.author,
-        $options: 'i'
-      }
-    }
-  }
-  if (review.approved) {
-    match = {
-      ...match,
-      approved: null
-    }
-  }
-  if (!_.isEmpty(catering.name)) {
-    match = {
-      ...match,
-      'catering.name': { $regex: catering.name, $options: 'i' }
-    }
-  }
-  if (!_.isEmpty(catering.address && catering.address.city)) {
-    match = {
-      ...match,
-      'catering.address.city': { $regex: catering.address.city, $options: 'i' }
-    }
-  }
-  if (!_.isEmpty(catering.address && catering.address.street)) {
-    match = {
-      ...match,
-      'catering.address.street': {
-        $regex: catering.address.street,
-        $options: 'i'
-      }
-    }
-  }
-  if (!_.isEmpty(catering.cuisine)) {
-    match = {
-      ...match,
-      'catering.cuisine.name': {
-        $regex: catering.cuisine.toString(),
-        $options: 'i'
-      }
-    }
-  }
-  if (!_.isEmpty(catering.michelinStars)) {
-    match = {
-      ...match,
-      'catering.michelinStars': { $gt: 0 }
-    }
-  }
-
   try {
-    let doc = await Review.aggregate([
-      { $project: { likedBy: 0 } },
-      {
-        $lookup: {
-          from: 'cateringestablishments',
-          localField: 'item',
-          foreignField: '_id',
-          as: 'catering'
-        }
-      },
-      { $unwind: '$catering' },
-      {
-        $lookup: {
-          from: 'users',
-          localField: 'createdBy',
-          foreignField: '_id',
-          as: 'author'
-        }
-      },
-      { $project: { 'author.password': 0 } },
-      { $unwind: '$author' },
-      { $match: match },
-      {
-        $group: {
-          _id: null,
-          total: { $sum: 1 },
-          docs: { $push: '$$ROOT' }
-        }
-      },
-      {
-        $project: {
-          docs: {
-            $slice: ['$docs', (page - 1) * perPage, perPage]
-          },
-          total: 1
-        }
-      },
-      { $project: { _id: 0 } }
-    ])
-
-    res.status(200).json({ data: doc[0] || { docs: [], total: 0 } })
+    const docs = await ReviewService.searchForReviews(
+      user,
+      query,
+      review,
+      catering
+    )
+    res.status(200).json(docs)
   } catch (e) {
     console.error(e)
     res.status(400).send(e)
