@@ -21,7 +21,7 @@ class CommentService extends DocumentService {
       // check if replay
       if (comment.replyTo) {
         const reply = await this.findDocumentByCollectionAndId(
-          comment.item,
+          comment.replyTo,
           'comment'
         )
         if (!reply) {
