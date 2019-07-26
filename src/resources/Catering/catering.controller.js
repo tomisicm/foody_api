@@ -1,6 +1,7 @@
 import _ from 'lodash'
 
 import { CateringEstablishment } from './catering.model'
+import CateringService from './cateringService'
 
 export const getOneCateringEstablishment = async (req, res) => {
   try {
@@ -97,17 +98,16 @@ export const getManyCateringEstablishment = async (req, res) => {
     res.status(200).json({ data: doc })
   } catch (e) {
     console.error(e)
-    res.status(400).end()
+    res.status(400).send(e)
   }
 }
 
 export const createCateringEstablishment = async (req, res) => {
   const value = req.parsed
+  const userId = req.user._id
+
   try {
-    const doc = await CateringEstablishment.create({
-      ...value,
-      pageMaintainedBy: req.user._id
-    })
+    const doc = await CateringService.createCatering(value, userId)
 
     res.status(201).json({ data: doc })
   } catch (e) {
@@ -116,16 +116,14 @@ export const createCateringEstablishment = async (req, res) => {
   }
 }
 
-export const updateCateringEstablishment = async (req, res) => {
-  // const updatedBy = req.user._id
+export const editCateringEstablishment = async (req, res) => {
+  const cateringId = req.params.id
+  const userId = req.user._id
   const value = req.parsed
 
   try {
-    const doc = await CateringEstablishment.findByIdAndUpdate(
-      req.params.id,
-      value,
-      { new: true }
-    )
+    const doc = await CateringService.editCatering(cateringId, value, userId)
+
     res.status(201).json({ data: doc })
   } catch (e) {
     console.error(e)
@@ -137,20 +135,16 @@ export const updateCateringEstablishment = async (req, res) => {
 
 // add pre remove hook for deleting all the comments and reviews
 export const deleteCateringEstablishment = async (req, res) => {
+  const cateringId = req.params.id
+  const user = req.user
+
   try {
-    const removed = await CateringEstablishment.findOneAndRemove({
-      createdBy: req.user._id,
-      _id: req.params.id
-    })
+    const doc = await CateringService.deleteCatering(cateringId, user)
 
-    if (!removed) {
-      return res.status(400).end()
-    }
-
-    return res.status(200).json({ data: removed })
+    return res.status(200).json({ data: doc })
   } catch (e) {
     console.error(e)
-    res.status(400).end()
+    res.status(400).send(e)
   }
 }
 
@@ -162,7 +156,7 @@ function setupQuery(queryObject, newQueryProp) {
 
 export default {
   createOne: createCateringEstablishment,
-  editOne: updateCateringEstablishment,
+  editOne: editCateringEstablishment,
   getOne: getOneCateringEstablishment,
   getMany: getManyCateringEstablishment,
   searchFor: searchForCateringEstablishment,

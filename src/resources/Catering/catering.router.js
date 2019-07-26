@@ -16,6 +16,8 @@ router.route('/search').post(controllers.searchFor)
 
 router.route('/:id').get(controllers.getOne)
 
+router.route('/:id').delete(authorization, controllers.deleteOne)
+
 router.route('/:id').put(authorization, validateEditObject, controllers.editOne)
 
 export default router
