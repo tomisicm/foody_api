@@ -55,7 +55,6 @@ export const searchForReviews = async (req, res) => {
       }
     }
   }
-  // approved is true only for non-approved docs else it is falsy
   if (review.approved) {
     match = {
       ...match,
@@ -99,7 +98,6 @@ export const searchForReviews = async (req, res) => {
     }
   }
 
-  console.log(match)
   try {
     let doc = await Review.aggregate([
       { $project: { likedBy: 0 } },
