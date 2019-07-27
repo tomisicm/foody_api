@@ -4,10 +4,10 @@ import UserService from './usersService'
 import _ from 'lodash'
 
 export const me = async (req, res) => {
-  const user = req.user
+  const userId = req.user._id
 
   try {
-    const doc = await UserService.getUser(user)
+    const doc = await UserService.getUser(userId)
     res.status(200).send({ data: doc })
   } catch (e) {
     console.error(e)

@@ -16,8 +16,9 @@ class UsersService {
 
   async editUser(userId, user) {
     try {
-      let doc = await User.findById(userId)
+      let doc = await this.getUser(userId)
 
+      // TODO: email cannot be already tanken
       doc.name = user.username
       doc.email = user.email
       doc.profile.profession = user.profession
@@ -31,9 +32,9 @@ class UsersService {
     }
   }
 
-  async getUser(user) {
+  async getUser(userId) {
     try {
-      let doc = await User.findById(user._id)
+      let doc = await User.findById(userId)
       return doc
     } catch (e) {
       console.error(e)
