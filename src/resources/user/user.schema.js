@@ -29,3 +29,15 @@ export const signupSchema = Joi.object().keys({
   password: password,
   passwordConfirm: passwordConfirm
 })
+
+export const updateUserProfileSchema = Joi.object().keys({
+  name: Joi.string()
+    .trim()
+    .min(8),
+
+  profile: Joi.object().keys({
+    profession: Joi.string()
+      .trim()
+      .min(8)
+  })
+})

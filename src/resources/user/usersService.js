@@ -18,7 +18,9 @@ class UsersService {
     try {
       let doc = await User.findById(userId)
 
-      doc = Object.assign(doc, { ...user })
+      doc.name = user.username
+      doc.email = user.email
+      doc.profile.profession = user.profession
 
       doc = await doc.save()
 

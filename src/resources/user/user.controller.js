@@ -1,4 +1,5 @@
 import { User } from './user.model'
+import UserService from './usersService'
 
 import _ from 'lodash'
 
@@ -14,14 +15,10 @@ export const me = async (req, res) => {
 }
 
 export const updateMe = async (req, res) => {
+  const userId = req.user._id
+
   try {
-    let user = await User.findById(req.user._id)
-
-    user.name = req.body.username
-    user.email = req.body.email
-    user.profile.profession = req.body.profession
-
-    user = await user.save()
+    const user = await UserService.editUser(userId, req.body)
 
     res.status(200).json({ data: user })
   } catch (e) {
