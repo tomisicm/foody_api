@@ -30,6 +30,16 @@ class UsersService {
       throw e
     }
   }
+
+  async getUser(user) {
+    try {
+      let doc = await User.findById(user._id)
+      return doc
+    } catch (e) {
+      console.error(e)
+      throw e
+    }
+  }
 }
 const usersService = new UsersService()
 
