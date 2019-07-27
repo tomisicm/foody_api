@@ -18,7 +18,12 @@ class UsersService {
     try {
       let doc = await this.getUser(userId)
 
-      // TODO: email cannot be already tanken
+      const emailTaken = await User.findByEmail(user.email)
+
+      if (emailTaken) {
+        throw new Error('email already taken')
+      }
+
       doc.name = user.username
       doc.email = user.email
       doc.profile.profession = user.profession
