@@ -1,6 +1,8 @@
 import mongoose from 'mongoose'
 import mongoosePaginate from 'mongoose-paginate'
 
+import MODEL from '../models'
+
 import Joi from '@hapi/joi'
 
 const cuisineSchema = new mongoose.Schema(
@@ -20,14 +22,14 @@ const cuisineSchema = new mongoose.Schema(
     ],
     createdBy: {
       type: mongoose.SchemaTypes.ObjectId,
-      ref: 'user',
+      ref: MODEL.USER,
       required: true
     },
     // this field will only be changable by admins
     approved: {
       default: null,
       type: mongoose.SchemaTypes.ObjectId,
-      ref: 'user'
+      ref: MODEL.USER
     }
   },
   {
@@ -60,4 +62,4 @@ cuisineSchema.plugin(mongoosePaginate)
 
 exports.cuisineSchema = cuisineSchema
 exports.validateObject = validateObject
-exports.Cuisine = mongoose.model('cuisine', cuisineSchema)
+exports.Cuisine = mongoose.model(MODEL.CUISINE, cuisineSchema)

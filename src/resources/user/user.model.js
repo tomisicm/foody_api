@@ -2,6 +2,7 @@ import mongoose from 'mongoose'
 import mongoosePaginate from 'mongoose-paginate'
 import uniqueValidator from 'mongoose-unique-validator'
 import bcrypt from 'bcrypt'
+import MODEL from '../models'
 
 const userSchema = new mongoose.Schema(
   {
@@ -102,4 +103,4 @@ userSchema.plugin(uniqueValidator)
 
 userSchema.plugin(mongoosePaginate)
 
-exports.User = mongoose.model('user', userSchema)
+exports.User = mongoose.model(MODEL.USER, userSchema)

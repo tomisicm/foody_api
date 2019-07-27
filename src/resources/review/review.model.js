@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import mongoosePaginate from 'mongoose-paginate'
+import MODEL from '../models'
 
 const reivewSchema = new mongoose.Schema(
   {
@@ -17,7 +18,7 @@ const reivewSchema = new mongoose.Schema(
     itemType: {
       type: String,
       required: true,
-      enum: ['cateringestablishment']
+      enum: [MODEL.CATERING]
     },
     generalImpression: {
       type: String,
@@ -59,14 +60,14 @@ const reivewSchema = new mongoose.Schema(
     },
     createdBy: {
       type: mongoose.SchemaTypes.ObjectId,
-      ref: 'user',
+      ref: MODEL.USER,
       required: true
     },
     // this field will only be changable by admins
     approved: {
       default: null,
       type: mongoose.SchemaTypes.ObjectId,
-      ref: 'user'
+      ref: MODEL.USER
     },
     // this field will only be changable by admins
     locked: {
@@ -76,7 +77,7 @@ const reivewSchema = new mongoose.Schema(
     likedBy: [
       {
         type: mongoose.SchemaTypes.ObjectId,
-        ref: 'user'
+        ref: MODEL.USER
       }
     ]
   },
@@ -115,6 +116,6 @@ reivewSchema.methods.determineLikes = function(userId) {
 
 reivewSchema.plugin(mongoosePaginate)
 
-const Review = mongoose.model('review', reivewSchema)
+const Review = mongoose.model(MODEL.REVIEW, reivewSchema)
 
 exports.Review = Review

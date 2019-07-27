@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import mongoosePaginate from 'mongoose-paginate'
+import MODEL from '../models'
 
 const commentSchema = new mongoose.Schema(
   {
@@ -11,7 +12,7 @@ const commentSchema = new mongoose.Schema(
     },
     createdBy: {
       type: mongoose.SchemaTypes.ObjectId,
-      ref: 'user',
+      ref: MODEL.USER,
       required: true
     },
     item: {
@@ -22,17 +23,17 @@ const commentSchema = new mongoose.Schema(
     itemType: {
       type: String,
       required: true,
-      enum: ['review', 'cateringestablishment']
+      enum: [MODEL.REVIEW, MODEL.CATERING]
     },
     replyTo: {
       type: mongoose.SchemaTypes.ObjectId,
-      ref: 'comment',
+      ref: MODEL.COMMENT,
       default: null
     },
     thread: [
       {
         type: mongoose.SchemaTypes.ObjectId,
-        ref: 'comment',
+        ref: MODEL.COMMENT,
         default: null
       }
     ]
@@ -42,7 +43,6 @@ const commentSchema = new mongoose.Schema(
 
 commentSchema.plugin(mongoosePaginate)
 
-// when comment is deleted, the whole thread is deleted
 commentSchema.pre('remove', async function() {
   if (this.replyTo == null) {
     await Comment.deleteMany({ replyTo: this._id })
@@ -66,6 +66,6 @@ commentSchema.post('save', async function() {
   }
 })
 
-const Comment = mongoose.model('comment', commentSchema)
+const Comment = mongoose.model(MODEL.COMMENT, commentSchema)
 
 exports.Comment = Comment

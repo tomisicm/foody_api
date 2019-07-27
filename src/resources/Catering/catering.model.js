@@ -3,6 +3,8 @@ import mongoosePaginate from 'mongoose-paginate'
 
 import { cuisineSchema } from '../food/cuisine.model'
 
+import MODEL from '../models'
+
 const cateringEstablishmentSchema = new mongoose.Schema(
   {
     name: {
@@ -31,7 +33,7 @@ const cateringEstablishmentSchema = new mongoose.Schema(
     images: [],
     owner: {
       type: mongoose.SchemaTypes.ObjectId,
-      ref: 'user',
+      ref: MODEL.USER,
       default: null
     },
     rating: {
@@ -41,7 +43,7 @@ const cateringEstablishmentSchema = new mongoose.Schema(
     pageMaintainedBy: [
       {
         type: mongoose.SchemaTypes.ObjectId,
-        ref: 'user',
+        ref: MODEL.USER,
         required: true
       }
     ]
@@ -93,7 +95,7 @@ cateringEstablishmentSchema.pre('remove', async function() {
 cateringEstablishmentSchema.plugin(mongoosePaginate)
 
 const CateringEstablishment = mongoose.model(
-  'cateringestablishment',
+  MODEL.CATERING,
   cateringEstablishmentSchema
 )
 

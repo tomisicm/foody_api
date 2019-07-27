@@ -1,6 +1,8 @@
 import mongoose from 'mongoose'
 import mongoosePaginate from 'mongoose-paginate'
 
+import MODEL from '../models'
+
 const foodSchema = new mongoose.Schema(
   {
     name: {
@@ -33,7 +35,7 @@ const foodSchema = new mongoose.Schema(
     },
     catering: {
       type: mongoose.SchemaTypes.ObjectId,
-      ref: 'cateringestablishment',
+      ref: MODEL.CATERING,
       required: true
     }
   },
@@ -55,4 +57,4 @@ const foodSchema = new mongoose.Schema(
 foodSchema.plugin(mongoosePaginate)
 
 exports.foodSchema = foodSchema
-exports.Food = mongoose.model('food', foodSchema)
+exports.Food = mongoose.model(MODEL.FOOD, foodSchema)
