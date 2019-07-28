@@ -47,7 +47,8 @@ const createComment = async (req, res) => {
 
     res.status(201).json({ data: doc })
   } catch (e) {
-    // all this fucking errors should be thrown in global error handler and dealt with there
+    // all this errors should be thrown in global error handler and dealt with there
+    // return next(e)
     console.error(e)
     res.status(400).send(e)
   }

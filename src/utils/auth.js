@@ -74,7 +74,6 @@ export const signin = async (req, res) => {
   }
 }
 
-// mount on /api/
 export const authentication = async (req, res, next) => {
   const bearer = req.headers.authorization
 
