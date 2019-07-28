@@ -1,6 +1,8 @@
 import { Comment } from './comment.model'
 import { DocumentService } from '../documentService'
 
+import MODEL from '../models'
+
 class CommentService extends DocumentService {
   getCommentById() {
     return null
@@ -24,7 +26,7 @@ class CommentService extends DocumentService {
           'comment'
         )
         if (!reply) {
-          throw new Error('reply does not exist')
+          throw new Error('comment you are trying to replay to does not exist')
         }
       }
 

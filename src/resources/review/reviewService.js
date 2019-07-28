@@ -14,7 +14,6 @@ class ReviewService extends DocumentService {
 
   async createReview(review, createdBy) {
     try {
-      // check if cateringestablishment exists
       const cateringestablishment = await this.findDocumentByCollectionAndId(
         review.item,
         'cateringestablishment'

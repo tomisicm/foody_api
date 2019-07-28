@@ -80,14 +80,13 @@ cateringEstablishmentSchema.virtual('fullAddress').get(function() {
 })
 
 cateringEstablishmentSchema.pre('remove', async function() {
-  // should remove reviews, comments, food
-  await mongoose.model('review').deleteMany({
+  await mongoose.model(MODEL.REVIEW).deleteMany({
     item: this._id
   })
-  await mongoose.model('comment').deleteMany({
+  await mongoose.model(MODEL.COMMENT).deleteMany({
     item: this._id
   })
-  await mongoose.model('food').deleteMany({
+  await mongoose.model(MODEL.FOOD).deleteMany({
     catering: this._id
   })
 })
