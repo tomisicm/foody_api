@@ -4,9 +4,9 @@ import { DocumentService } from '../documentService'
 import MODEL from '../models'
 
 class CommentService extends DocumentService {
-  getCommentById() {
+  /* getCommentById() {
     return null
-  }
+  } */
 
   async createComment(comment, createdBy) {
     try {

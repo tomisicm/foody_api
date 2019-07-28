@@ -20,6 +20,8 @@ import FoodRouter from './resources/food/food.router'
 import ReviewRouter from './resources/review/review.router'
 import CommentRouter from './resources/review/comment.router'
 
+import StatisticRouter from './resources/statistics/statistic.router'
+
 Joi.objectId = require('joi-objectid')(Joi)
 
 export const app = express()
@@ -45,6 +47,8 @@ app.use('/api/food', FoodRouter)
 app.use('/api/catering', CateringRouter)
 app.use('/api/review', ReviewRouter)
 app.use('/api/comment', CommentRouter)
+
+app.use('/api/statistics', StatisticRouter)
 
 const start = async () => {
   try {
