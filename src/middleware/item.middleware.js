@@ -1,7 +1,6 @@
 import mongoose from 'mongoose'
-import { Err } from '@hapi/joi/lib/errors'
 
-// itemType is ref to the model
+// NOT IN USE
 export const findDocumentByModelAndId = async (req, res, next) => {
   try {
     const doc = await mongoose.model(req.body.itemType).findById(req.body.item)
@@ -18,7 +17,6 @@ export const findDocumentByModelAndId = async (req, res, next) => {
   }
 }
 
-// itemType is ref to the model
 export const findDocumentByCollectionAndId = async (
   docId,
   collection,

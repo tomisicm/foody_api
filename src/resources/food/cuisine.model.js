@@ -25,7 +25,6 @@ const cuisineSchema = new mongoose.Schema(
       ref: MODEL.USER,
       required: true
     },
-    // this field will only be changable by admins
     approved: {
       default: null,
       type: mongoose.SchemaTypes.ObjectId,

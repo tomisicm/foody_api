@@ -73,7 +73,6 @@ class ReviewService extends DocumentService {
     }
   }
 
-  // can be extracted as separate service
   // TODO: i do not have to return whole doc only the liked status
   async likeReview(reviewId, user) {
     try {
@@ -102,7 +101,6 @@ class ReviewService extends DocumentService {
     }
   }
 
-  // only admins can change status
   async editReviewStatus(reviewId, reviewStatus, user) {
     if (!user.admin) {
       throw new Error('You do not have admin permissions')
@@ -117,7 +115,6 @@ class ReviewService extends DocumentService {
         { new: true }
       )
 
-      // doc approved is reference
       if (!doc.approved && reviewStatus.approved === true) {
         doc.approved = user._id
         await doc.save()

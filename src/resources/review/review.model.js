@@ -63,13 +63,11 @@ const reivewSchema = new mongoose.Schema(
       ref: MODEL.USER,
       required: true
     },
-    // this field will only be changable by admins
     approved: {
       default: null,
       type: mongoose.SchemaTypes.ObjectId,
       ref: MODEL.USER
     },
-    // this field will only be changable by admins
     locked: {
       type: Boolean,
       default: false

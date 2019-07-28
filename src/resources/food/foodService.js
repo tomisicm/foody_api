@@ -4,7 +4,6 @@ import { DocumentService } from '../documentService'
 class FoodService extends DocumentService {
   async createFood(food, userId) {
     try {
-      // check if cateringestablishment exists
       const cateringestablishment = await this.findDocumentByCollectionAndId(
         food.catering,
         'cateringestablishment'

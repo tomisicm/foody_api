@@ -8,7 +8,6 @@ class CommentService extends DocumentService {
 
   async createComment(comment, createdBy) {
     try {
-      // check if cateringestablishment exists
       const cateringestablishment = await this.findDocumentByCollectionAndId(
         comment.item,
         'cateringestablishment'
@@ -55,7 +54,6 @@ class CommentService extends DocumentService {
         .lean()
         .exec()
       if (!updatedDoc) {
-        // comment.createdBy !== userId
         throw new Error('comment does not exist')
       }
 

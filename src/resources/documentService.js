@@ -6,7 +6,6 @@ class DocumentService {
       const doc = await mongoose.model(collection).findById(docId)
       return doc
     } catch (e) {
-      // console.log(e)
       throw e
     }
   }

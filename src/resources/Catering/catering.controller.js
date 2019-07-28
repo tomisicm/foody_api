@@ -133,7 +133,6 @@ export const editCateringEstablishment = async (req, res) => {
   res.status(201)
 }
 
-// add pre remove hook for deleting all the comments and reviews
 export const deleteCateringEstablishment = async (req, res) => {
   const cateringId = req.params.id
   const user = req.user

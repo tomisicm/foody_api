@@ -8,7 +8,6 @@ function validateCreateObject(req, res, next) {
   })
 
   if (error) {
-    // return next(error)
     return res.status(400).send(error)
   }
   req.parsed = value
@@ -21,7 +20,6 @@ function validateEditObject(req, res, next) {
   })
 
   if (error) {
-    // return next(error)
     return res.status(400).send(error)
   }
   req.parsed = value

@@ -6,8 +6,6 @@ import {
   validateEditObject
 } from '../review/comment.middleware'
 
-// import { findDocumentByModelAndId } from '../../middleware/item.middleware'
-
 const router = Router()
 
 router

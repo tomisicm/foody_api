@@ -123,7 +123,6 @@ export const editReviewStatus = async (req, res) => {
   }
 }
 
-// review content can only be updated by its creator
 export const editReview = async (req, res) => {
   const reviewId = req.params.id
   const createdBy = req.user._id
