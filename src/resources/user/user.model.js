@@ -46,6 +46,7 @@ const userSchema = new mongoose.Schema(
       }
     }
   },
+  { timestamps: true },
   {
     toObject: {
       transform: function(doc, ret) {
@@ -59,8 +60,7 @@ const userSchema = new mongoose.Schema(
         delete ret.__v
       }
     }
-  },
-  { timestamps: true }
+  }
 )
 
 userSchema.pre('save', function(next) {

@@ -1,11 +1,9 @@
 import mongoose from 'mongoose'
 import moment from 'moment'
 
-import MODEL from '../models'
-
 class Statistics {
   async countNewlyCreatedDocuments(model) {
-    const doc = await mongoose.model(MODEL.REVIEW).aggregate([
+    const doc = await mongoose.model(model).aggregate([
       {
         $match: {
           createdAt: {
@@ -16,9 +14,11 @@ class Statistics {
         }
       },
       {
-        $count: 'weeklyReviewStatistic'
+        $count: 'weeklyStatistic'
       }
     ])
+
+    console.log(mongoose.modelNames())
     return doc
   }
 }

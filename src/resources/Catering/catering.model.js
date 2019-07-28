@@ -48,6 +48,7 @@ const cateringEstablishmentSchema = new mongoose.Schema(
       }
     ]
   },
+  { timestamps: true },
   {
     toObject: {
       virtuals: true,
@@ -61,8 +62,7 @@ const cateringEstablishmentSchema = new mongoose.Schema(
         delete ret.__v
       }
     }
-  },
-  { timestamps: true }
+  }
 )
 
 cateringEstablishmentSchema.methods.canMaintainCatering = function(userId) {
